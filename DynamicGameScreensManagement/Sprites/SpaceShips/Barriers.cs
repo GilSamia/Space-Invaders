@@ -46,7 +46,6 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         public override void Draw(GameTime i_GameTime)
         {
-
         }
     }
 }

@@ -32,6 +32,7 @@ namespace SpaceInvaders.Sprites.Bullets
             float deltaX = (r_Shooter.ShooterWidth / 2) - (Texture.Width / 2);
             Position = new Vector2(r_Shooter.ShooterPosition.X + deltaX, r_Shooter.ShooterPosition.Y);
         }
+
         public override void Update(GameTime i_GameTime)
         {
             m_Velocity.Y = k_BulletSpeed * getDirectionY();

@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Input;
 using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Screens.MainMenu;
+using Infrastructure.Managers;
+using SpaceInvaders.Menus;
 
 namespace GameScreens.Screens
 {
@@ -39,6 +41,7 @@ namespace GameScreens.Screens
 
             if (InputManager.KeyPressed(Keys.Enter))
             {
+                //Todo: Change to play game
                 ExitScreen();
             }
 
@@ -49,7 +52,8 @@ namespace GameScreens.Screens
 
             if (InputManager.KeyPressed(Keys.M))
             {
-                this.ScreensManager.SetCurrentScreen(new MainMenuScreen(r_Game, SpriteBatch));
+                MainMenu mainMenuDelegate = DelegatesMenu.CreateDelegatesMenu(r_Game);
+                mainMenuDelegate.InitializeMainMenu();
             }
         }
         public override void Draw(GameTime i_GameTime)
