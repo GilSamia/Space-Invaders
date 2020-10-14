@@ -30,8 +30,8 @@ namespace SpaceInvaders.Menus
             m_CurrentMenuItemIndex = 0;
 
             m_SoundOn = true;
-            m_BackgroundMusicVolume = 50;
-            m_SoundEffectVolume = 50;
+            m_BackgroundMusicVolume = (int)(i_Game.BackgroundSound.Volume * 100);
+            m_SoundEffectVolume = (int)(i_Game.SoundEffectVolume * 100);
 
             initializeMenuItems();
         }
@@ -137,10 +137,12 @@ namespace SpaceInvaders.Menus
                 case 1:
                     if(i_increase && m_BackgroundMusicVolume < 100)
                     {
+                        r_Game.BackgroundSound.Volume += 0.1f;
                         m_BackgroundMusicVolume += 10;
                     }
                     else if (!i_increase && m_BackgroundMusicVolume > 0)
                     {
+                        r_Game.BackgroundSound.Volume -= 0.1f;
                         m_BackgroundMusicVolume -= 10;
                     }
 
@@ -151,10 +153,12 @@ namespace SpaceInvaders.Menus
                 case 2:
                     if (i_increase && m_SoundEffectVolume < 100)
                     {
+                        (Game as GameWithScreens).SoundEffectVolume += 0.1f;
                         m_SoundEffectVolume += 10;
                     }
                     else if (!i_increase && m_SoundEffectVolume > 0)
                     {
+                        (Game as GameWithScreens).SoundEffectVolume -= 0.1f;
                         m_SoundEffectVolume -= 10;
                     }
 

@@ -50,6 +50,12 @@ namespace SpaceInvaders
         public SoundEffectInstance MenuMoveSound => m_MenuMoveSound;
         public SoundEffectInstance CurrentSound => m_CurrentSound;
         public List<string> SoundsEffects => m_SoundsEffects;
+        public float SoundEffectVolume {
+            get { return m_SoundEffectVolume; }
+            set { m_SoundEffectVolume = value;
+                setSoundEffectVolume(m_SoundEffectVolume);
+            }
+        }
         public Dictionary<string, SoundEffectInstance> SpriteSoundEffects => r_SpriteSoundEffects;
 
         private void setScreenStack(ScreensMananger i_ScreensManager)
@@ -74,13 +80,16 @@ namespace SpaceInvaders
             m_BackgroundSound.Play();
 
             m_MenuMoveSound = this.Content.Load<SoundEffect>("Sounds/MenuMove").CreateInstance();
+            m_MenuMoveSound.Volume = 0.5f;
 
+            m_SoundEffectVolume = 0.5f;
             m_SoundsEffects = new List<string>(new string[] 
             {"EnemyGunShot", "EnemyKill", "MotherShipKill", "BarrierHit", "GameOver", "LevelWin", "LifeDie", "SSGunShot"}
             );
             foreach (string soundEffect in m_SoundsEffects)
             {
                 m_CurrentSound = this.Content.Load<SoundEffect>($"Sounds/{soundEffect}").CreateInstance();
+                m_CurrentSound.Volume = 0.5f;
                 r_SpriteSoundEffects.Add(soundEffect, m_CurrentSound);
             }
         }
@@ -108,9 +117,12 @@ namespace SpaceInvaders
 
         private void setSoundEffectVolume(float i_Volume)
         {
-            foreach (string soundEffect in m_SoundsEffects)
+            if (i_Volume <= 1.0f && i_Volume >= 0.0f)
             {
-                r_SpriteSoundEffects[$"{soundEffect}"].Volume = i_Volume;
+                foreach (string soundEffect in m_SoundsEffects)
+                {
+                    r_SpriteSoundEffects[$"{soundEffect}"].Volume = i_Volume;
+                }
             }
         }
 
