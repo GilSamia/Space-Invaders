@@ -202,8 +202,8 @@ namespace SpaceInvaders.Sprites.Enemies
                 }
             }
 
-            //Game1 game = (Game as Game1);
-            //game.GameManager.GameOver(true); Define Game over with GameScreen
+             //(r_Game as PlayScreen).OnGameOver();
+
         }
 
 

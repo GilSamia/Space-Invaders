@@ -104,6 +104,7 @@ namespace SpaceInvaders.Sprites
         {
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
+            //(r_Game.Game as PlayScreen).OnGameOver;
         }
 
         public override void Initialize()

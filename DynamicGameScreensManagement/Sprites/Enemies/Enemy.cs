@@ -1,4 +1,5 @@
-﻿using Infrastructure.ObjectModel;
+﻿using GameScreens.Screens;
+using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
@@ -166,7 +167,7 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             if (Position.Y + Texture.Height >= SpaceShip.PositionY)
             {
-                //(Game as GameScreen).GameManager.GameOver(false); TODO: Game over!!!!
+                (r_Game as PlayScreen).OnGameOver();
             }
         }
 

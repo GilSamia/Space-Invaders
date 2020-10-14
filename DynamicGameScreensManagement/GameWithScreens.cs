@@ -4,6 +4,7 @@ using Infrastructure.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceInvaders.Menus;
 using SpaceInvaders.Screens;
 using System.Collections.Generic;
 
@@ -46,10 +47,11 @@ namespace SpaceInvaders
             this.Content.RootDirectory = "Content";
             m_inputManager = new InputManager(this);
 
-            ScreensMananger screensManager = new ScreensMananger(this);
-            setScreenStack(screensManager);
+            m_ScreensManager = new ScreensMananger(this);
+            setScreenStack(m_ScreensManager);
         }
         
+        public ScreensMananger ScreensManager => m_ScreensManager;
         public GraphicsDeviceManager GraphicsManager => m_GraphicsManager;
 
         public SoundEffectInstance BackgroundSound => m_BackgroundSound;
@@ -77,10 +79,25 @@ namespace SpaceInvaders
 
         private void setScreenStack(ScreensMananger i_ScreensManager)
         {
-            //i_ScreensManager.Push(new GameOverScreen(this));
+            i_ScreensManager.Push(new GameOverScreen(this));
             i_ScreensManager.Push(new PlayScreen(this));
             i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
             i_ScreensManager.SetCurrentScreen(new WelcomeScreen(this));
+        }
+
+        public void setScreenStackOnGameOver(ScreensMananger i_ScreensManager)
+        {
+            i_ScreensManager.Push(new GameOverScreen(this));
+            i_ScreensManager.Push(new PlayScreen(this));
+            i_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this, 1));
+        }
+        
+        public void setMainMenuStackOnGameOver(ScreensMananger i_ScreensManager)
+        {
+            i_ScreensManager.Push(new GameOverScreen(this));
+            i_ScreensManager.Push(new PlayScreen(this));
+            i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
+            i_ScreensManager.SetCurrentScreen(new MainMenu(this));
         }
 
         protected override void Initialize()

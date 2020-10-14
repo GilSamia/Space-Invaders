@@ -110,7 +110,7 @@ namespace GameScreens.Screens
             }
         }
 
-        private void OnGameOver()
+        public void OnGameOver()
         {
             this.ExitScreen();
         }
