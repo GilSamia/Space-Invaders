@@ -24,7 +24,7 @@ namespace GameScreens.Screens
         private Background m_Background;
 
         public WelcomeScreen(GameWithScreens i_Game)
-            : base (i_Game)
+            : base(i_Game)
         {
             r_Game = i_Game;
         }
@@ -33,7 +33,7 @@ namespace GameScreens.Screens
         {
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             this.Add(m_Background);
-            base.Initialize();         
+            base.Initialize();
         }
 
         public override void Update(GameTime i_GameTime)
@@ -59,6 +59,7 @@ namespace GameScreens.Screens
                 ScreensManager.SetCurrentScreen(new MainMenu(r_Game));
             }
         }
+
         public override void Draw(GameTime i_GameTime)
         {
             try
@@ -87,5 +88,5 @@ Enter    -    Start Game (Level 1)
 Esc      -    Exit
 M        -    Main Menu", messagePosition, Color.White);
         }
-}
+    }
 }

@@ -70,6 +70,10 @@ namespace SpaceInvaders.Menus
             updateCircularMenuPosition();
             updateUserChoise();
             UpdateSettings();
+            if (InputManager.KeyPressed(Keys.M))
+            {
+                r_Game.MuteSound();
+            }
         }
 
         private void updateCircularMenuPosition()

@@ -65,6 +65,10 @@ namespace SpaceInvaders.Menus
             base.Update(gameTime);
             updateCircularMenuPosition();
             updateUserChoise();
+            if (InputManager.KeyPressed(Keys.M))
+            {
+                r_Game.MuteSound();
+            }
         }
 
         private void toggleNumberOfPlayers()

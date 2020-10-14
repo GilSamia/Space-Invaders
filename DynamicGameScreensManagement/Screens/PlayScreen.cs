@@ -5,6 +5,7 @@ using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders;
 using SpaceInvaders.Screens;
 using SpaceInvaders.Sprites;
 using SpaceInvaders.Sprites.Enemies;
@@ -130,6 +131,10 @@ namespace GameScreens.Screens
             if (InputManager.KeyPressed(Keys.P))
             {
                 m_ScreensManager.SetCurrentScreen(new PauseScreen(this.Game));
+            }
+            if (InputManager.KeyPressed(Keys.M))
+            {
+                (Game as GameWithScreens).MuteSound();
             }
         }
 
