@@ -58,7 +58,7 @@ namespace GameScreens.Screens
         {
             if (!m_IsInit)
             {
-                //addManagers();
+                addManagers();
                 addBackground();
                 addSpaceShips();
                 addMotherShip();
@@ -72,31 +72,28 @@ namespace GameScreens.Screens
         public void addBarriers()
         {
             m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32");
-            //this.Add(m_Barriers);
         }
 
         public void addEnemyMatrix()
         {
             m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32");
-            //this.Add(m_EnemyMatrix);
         }
 
         private void addMotherShip()
         {
             m_MotherShip = new MotherShip(this);
-            //this.Add(m_MotherShip);
         }
 
         private void addManagers()
         {
-            new InputManager(r_Game);
+            //new InputManager(r_Game);
             new CollisionsManager(r_Game);
         }
 
         private void addBackground()
         {
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
-            //this.Add(m_Background);
+            this.Add(m_Background);
         }
 
         private void addSpaceShips()

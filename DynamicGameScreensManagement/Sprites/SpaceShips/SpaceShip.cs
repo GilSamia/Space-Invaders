@@ -16,6 +16,8 @@ namespace SpaceInvaders.Sprites
 {
     internal class SpaceShip : Sprite, IShooter, ICollidable2D, IDeadable
     {
+        private GameScreen r_Game;
+
         protected IInputManager m_InputManager;
         private const float k_Velocity = 140f;
         private const float k_SpaceShipDistanceDelta = 1.5f;
@@ -44,10 +46,12 @@ namespace SpaceInvaders.Sprites
         public SpaceShip(GameScreen i_Game, PlayerData m_PlayerData)
             : base(m_PlayerData.AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             this.m_PlayerData = m_PlayerData;
             r_SpaceShipIndex = m_SpaceShipCounter;
             m_SpaceShipCounter++;
             PlayerInformation = new PlayerInformation(r_SpaceShipIndex);
+            i_Game.Add(this);
         }
 
         public PlayerInformation PlayerInformation { get; }
@@ -59,6 +63,7 @@ namespace SpaceInvaders.Sprites
         public int SpaceShipIndex => r_SpaceShipIndex;
 
         public static int TexutreSize { get => m_TexutreSize; set => m_TexutreSize = value; }
+
         public static float PositionY { get; private set; }
 
         private void addScoreFont()
@@ -111,6 +116,9 @@ namespace SpaceInvaders.Sprites
             addLifes();
             addScoreFont();
             TexutreSize = Texture.Width;
+            //m_ShootingSound = this.Content.Load<SoundEffect>("Sounds/BGMusic").CreateInstance();
+            //m_BackgroundSounds.Play();
+
         }
 
         private void addLifes()
@@ -163,7 +171,7 @@ namespace SpaceInvaders.Sprites
         {
             if (canShoot())
             {
-                Bullet bullet = new SpaceShipBullet(Game, this);
+                Bullet bullet = new SpaceShipBullet(r_Game, this);
                 m_BulletsCounter++;
             }
         }

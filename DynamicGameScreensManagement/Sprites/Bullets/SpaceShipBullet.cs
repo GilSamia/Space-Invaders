@@ -1,4 +1,5 @@
-﻿using Infrastructure.ServiceInterfaces;
+﻿using Infrastructure.ObjectModel.Screens;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Interfaces;
 using SpaceInvaders.Sprites.Enemies;
@@ -7,7 +8,7 @@ namespace SpaceInvaders.Sprites.Bullets
 {
     internal class SpaceShipBullet : Bullet
     {
-        public SpaceShipBullet(Game i_Game, IShooter i_Shooter) : base(i_Game, i_Shooter)
+        public SpaceShipBullet(GameScreen i_Game, IShooter i_Shooter) : base(i_Game, i_Shooter)
         {
             TintColor = Color.Red;
             m_Direction = -1;

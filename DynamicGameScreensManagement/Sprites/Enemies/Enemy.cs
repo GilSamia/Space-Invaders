@@ -13,6 +13,7 @@ namespace SpaceInvaders.Sprites.Enemies
 {
     internal class Enemy : Sprite, ICollidable2D, IShooter, IDeadable, IEnemy
     {
+        private GameScreen r_Game;
         private readonly EnemyData r_EnemyData;
         private readonly EnemyMatrix r_EnemyMatrix;
         private readonly int r_EnemyIndex;
@@ -40,6 +41,7 @@ namespace SpaceInvaders.Sprites.Enemies
         public Enemy(GameScreen i_Game, EnemyData i_EnemyData, EnemyMatrix i_EnemyMatrix)
             : base(i_EnemyData.AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             this.r_EnemyData = i_EnemyData;
             Position = i_EnemyData.EnemyStartPosition;
             TintColor = i_EnemyData.EnemyColor;
@@ -171,7 +173,7 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             if (m_BulletCounter < r_MaxNumberOfBullets)
             {
-                Bullet bullet = new EnemyBullet(Game, this);
+                Bullet bullet = new EnemyBullet(r_Game, this);
                 m_BulletCounter++;
             }
         }

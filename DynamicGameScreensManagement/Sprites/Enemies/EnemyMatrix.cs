@@ -54,7 +54,6 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             base.Initialize();
             initializeEnemyMatrix();
-
         }
 
         private void initializeEnemyMatrix()

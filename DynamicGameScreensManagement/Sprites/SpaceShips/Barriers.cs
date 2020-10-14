@@ -7,7 +7,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
 {
     internal class Barriers : Sprite
     {
-
+        private readonly GameScreen r_Game;
         private const int k_NumberOfBarriers = 4;
         private readonly List<Barrier> r_Barriers;
 
@@ -17,7 +17,9 @@ namespace SpaceInvaders.Sprites.SpaceShips
         public Barriers(GameScreen i_Game, string i_AssetName)
             : base(i_AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             r_Barriers = new List<Barrier>();
+            i_Game.Add(this);
         }
 
         public override void Initialize()
@@ -35,7 +37,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
                 Texture.GetData<Color>(pixels);
                 Color[] clonePixels = pixels.Clone() as Color[];
 
-                r_Barriers.Add(new Barrier(Game, AssetName + i, position, clonePixels));
+                r_Barriers.Add(new Barrier(r_Game, AssetName + i, position, clonePixels));
                 currentX += (Texture.Width + Texture.Width * k_DistancePrecentage);
             }
         }

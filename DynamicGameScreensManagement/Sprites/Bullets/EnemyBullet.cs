@@ -1,4 +1,5 @@
-﻿using Infrastructure.ServiceInterfaces;
+﻿using Infrastructure.ObjectModel.Screens;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Interfaces;
 using System;
@@ -10,11 +11,11 @@ namespace SpaceInvaders.Sprites.Bullets
         private readonly Random r_Random = new Random();
         private readonly int r_DisappearOnHitProbability = 7;
 
-        public EnemyBullet(Game i_Game, IShooter i_Shooter) : base(i_Game, i_Shooter)
+        public EnemyBullet(GameScreen i_Game, IShooter i_Shooter) : base(i_Game, i_Shooter)
         {
             TintColor = Color.Blue;
             m_Direction = 1;
-            m_BulletMaxAppearance = i_Game.Window.ClientBounds.Height;
+            m_BulletMaxAppearance = i_Game.Game.Window.ClientBounds.Height;
         }
 
         public override void Collided(ICollidable i_Collidable)

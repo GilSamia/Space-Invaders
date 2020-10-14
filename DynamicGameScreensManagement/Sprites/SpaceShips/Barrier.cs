@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,12 +25,13 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         public event EventHandler<EventArgs> Disposed;
 
-        public Barrier(Game i_Game, string i_AssetName, Vector2 i_Position, Color[] i_Pixels)
-            : base(i_AssetName, i_Game)
+        public Barrier(GameScreen i_Game, string i_AssetName, Vector2 i_Position, Color[] i_Pixels)
+            : base(i_AssetName, i_Game.Game)
         {
             m_Pixels = i_Pixels;
             r_StartPosition = i_Position;
             r_CollisionsManager = Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
+            i_Game.Add(this);
         }
 
         public Texture2D BarrierTexture => Texture;

@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Interfaces;
@@ -16,9 +17,10 @@ namespace SpaceInvaders.Sprites.Bullets
 
         public event EventHandler<EventArgs> Disposed;
 
-        public Bullet(Game i_Game, IShooter i_Shooter) : base(k_AssetName, i_Game)
+        public Bullet(GameScreen i_Game, IShooter i_Shooter) : base(k_AssetName, i_Game.Game)
         {
             r_Shooter = i_Shooter;
+            i_Game.Add(this);
         }
 
         public override void Initialize()

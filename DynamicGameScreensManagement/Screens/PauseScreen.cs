@@ -8,8 +8,6 @@ namespace SpaceInvaders.Screens
 {
     public class PauseScreen : GameScreen
     {
-        Background m_Background;
-
         public PauseScreen(Game i_Game) : base(i_Game)
         {
             this.IsModal = true;
@@ -51,10 +49,11 @@ namespace SpaceInvaders.Screens
                 SpriteBatch.End();
             }
         }
+
         private void displayPauseMessage()
         {
             SpriteFont consolasFont = ContentManager.Load<SpriteFont>(@"Fonts\Consolas");
-            string message = string.Format("The game was paused{0}{0} You can resume by pressing <R>", System.Environment.NewLine);
+            string message = string.Format("The game is paused{0}{0} You can resume by pressing <R>", System.Environment.NewLine);
             Vector2 position = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             SpriteBatch.DrawString(consolasFont, message, position, Color.White);
         }
