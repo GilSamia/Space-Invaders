@@ -88,7 +88,7 @@ namespace GameScreens.Screens
 
         private void addBackground()
         {
-            m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
+            m_Background = new Background(this, @"Sprites/BG_Space01_1024x768", 1);
             this.Add(m_Background);
         }
 
@@ -99,7 +99,10 @@ namespace GameScreens.Screens
             PlayerData player1Data = (new PlayerData(Keys.I, Keys.P, Keys.D9, @"Sprites/Ship01_32x32"));
             r_SpaceShips.Add(new SpaceShipWithMouse(this, player1Data));
 
-            playersData.Add(new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
+            if (!(Game as GameWithScreens).SinglePlayerGame)
+            {
+                playersData.Add(new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
+            }
 
             foreach (PlayerData data in playersData)
             {

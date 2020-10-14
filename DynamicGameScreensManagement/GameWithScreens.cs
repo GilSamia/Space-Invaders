@@ -27,8 +27,11 @@ namespace SpaceInvaders
 
         private bool m_Muted = false;
 
+        private bool m_SinglePlayerGame = true;
+
         private readonly Dictionary<string, SoundEffectInstance> r_SpriteSoundEffects;
         private List<string> m_SoundsEffects;
+
         public GameWithScreens()
         {
             m_GraphicsManager = new GraphicsDeviceManager(this);
@@ -46,16 +49,30 @@ namespace SpaceInvaders
             ScreensMananger screensManager = new ScreensMananger(this);
             setScreenStack(screensManager);
         }
+        
+        public GraphicsDeviceManager GraphicsManager => m_GraphicsManager;
+
         public SoundEffectInstance BackgroundSound => m_BackgroundSound;
+        
         public SoundEffectInstance MenuMoveSound => m_MenuMoveSound;
+        
         public SoundEffectInstance CurrentSound => m_CurrentSound;
+        
         public List<string> SoundsEffects => m_SoundsEffects;
+
         public float SoundEffectVolume {
             get { return m_SoundEffectVolume; }
             set { m_SoundEffectVolume = value;
                 setSoundEffectVolume(m_SoundEffectVolume);
             }
         }
+
+        public bool SinglePlayerGame
+        {
+            get { return m_SinglePlayerGame; }
+            set { m_SinglePlayerGame = value;}
+        }
+
         public Dictionary<string, SoundEffectInstance> SpriteSoundEffects => r_SpriteSoundEffects;
 
         private void setScreenStack(ScreensMananger i_ScreensManager)

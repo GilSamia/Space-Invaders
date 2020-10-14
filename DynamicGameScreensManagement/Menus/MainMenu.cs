@@ -76,10 +76,12 @@ namespace SpaceInvaders.Menus
             if (m_NumberOfPlayers == 1)
             {
                 m_NumberOfPlayers = 2;
+                (Game as GameWithScreens).SinglePlayerGame = false;
             }
             else
             {
                 m_NumberOfPlayers = 1;
+                (Game as GameWithScreens).SinglePlayerGame = true;
             }
             r_MenuItemList[1] = string.Format("Players: {0}", numberOfPlayersToString());
         }

@@ -157,8 +157,8 @@ namespace SpaceInvaders.Menus
 
         private void toggleFullScreenMode()
         {
-            //            r_Game.GraphicsDeviceManager.ToggleFullScreen(); TODO: WHY THIS IS NOT WORKING?????
-            //GraphicsDeviceManager.ToggleFullScreen();
+            (r_Game as GameWithScreens).GraphicsManager.ToggleFullScreen();
+            //TODO: WHY THIS IS NOT WORKING?????
 
             m_FullScreenOn = !m_FullScreenOn;
             r_MenuItemList[1] = string.Format("Full Screen Mode: {0}", boolToString(m_FullScreenOn));
