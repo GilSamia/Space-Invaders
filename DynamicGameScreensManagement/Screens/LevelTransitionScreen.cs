@@ -72,10 +72,10 @@ namespace SpaceInvaders.Screens
         }
         private void displayCountDown()
         {
-            SpriteFont consolasFont = ContentManager.Load<SpriteFont>(@"Fonts\Consolas");
+            SpriteFont fontCalibri = ContentManager.Load<SpriteFont>(@"Fonts\Calibri");
             string message = string.Format("You're in level {0}{2}{2}!Starting in {1}", m_Level, m_CoundDownNumber, Environment.NewLine);
             Vector2 position = new Vector2(100, GraphicsDevice.Viewport.Height / 2);
-            SpriteBatch.DrawString(consolasFont, message, position, Color.White);
+            SpriteBatch.DrawString(fontCalibri, message, position, Color.White);
         }
     }
 }

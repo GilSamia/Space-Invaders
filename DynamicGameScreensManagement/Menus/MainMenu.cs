@@ -1,97 +1,185 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using GameScreens.Sprites;
+using Infrastructure.ObjectModel.Screens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SpaceInvaders.Menus
 {
-    public class MainMenu : MenuItem
+    class MainMenu : GameScreen
     {
-        private const int k_MinNumberForUserSelection = 1;
-        private const int k_BackorExitIndex = 0;
-        private const string k_BackOption = "Done";
-        private const string k_ExitOption = "Quit";
-        private readonly Stack<SubMenu> m_MainMenuFlowStack;
+        private readonly Game r_Game;
+        private Background m_Background;
+        private readonly List<string> r_MenuItemList;
+        private MenuOperations m_MenuOperations;
+        private int m_NumberOfPlayers;
+        private int m_CurrentMenuItemIndex;
 
-        public MainMenu(Game i_Game, string i_Header, List<MenuItem> i_MainOptions) : base(i_Game, i_Header)
+        public MainMenu(Game i_Game) : base(i_Game)
         {
-            SubMenu mainMenu = new SubMenu(i_Game, i_Header, i_MainOptions);
-            this.m_MainMenuFlowStack = new Stack<SubMenu>();
-            this.m_MainMenuFlowStack.Push(mainMenu);
+            m_Background = new Background(i_Game, @"Sprites\BG_Space01_1024x768", 1);
+            this.Add(m_Background);
+
+            m_NumberOfPlayers = 1;
+            r_MenuItemList = new List<string>();
+            m_CurrentMenuItemIndex = 0;
+            m_MenuOperations = new MenuOperations(r_Game);
+            initializeMenuItems();
         }
 
-        public void InitializeMainMenu()
+        private void initializeMenuItems()
         {
-            bool wantsToStay = true;
-            bool exitOptionExists = true;
-            string lastOption = string.Empty;
+            r_MenuItemList.Add("Screen Settings");
+            r_MenuItemList.Add(string.Format("Players: {0}", numberOfPlayersToString()));
+            r_MenuItemList.Add("Sound Settings");
+            r_MenuItemList.Add("Play");
+            r_MenuItemList.Add("Quit");
+        }
 
-            do
+        private string numberOfPlayersToString()
+        {
+            string numberInStr = string.Empty;
+            if (m_NumberOfPlayers == 1)
             {
-                SubMenu subMenu = m_MainMenuFlowStack.Peek();
-                exitOptionExists = this.m_MainMenuFlowStack.Count == 1;
-                lastOption = string.Empty;
+                numberInStr = "One";
+            }
+            else
+            {
+                numberInStr = "Two";
+            }
 
-                if (exitOptionExists)
+            return numberInStr;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            updateCircularMenuPosition();
+            updateUserChoise();
+        }
+
+        private void toggleNumberOfPlayers()
+        {
+            if (m_NumberOfPlayers == 1)
+            {
+                m_NumberOfPlayers = 2;
+            }
+            else
+            {
+                m_NumberOfPlayers = 1;
+            }
+            r_MenuItemList[1] = string.Format("Players: {0}", numberOfPlayersToString());
+        }
+
+        private void updateCircularMenuPosition()
+        {
+            if (InputManager.KeyPressed(Keys.Down))
+            {
+                m_CurrentMenuItemIndex++;
+                if (m_CurrentMenuItemIndex == r_MenuItemList.Count)
                 {
-                    lastOption = k_ExitOption;
+                    m_CurrentMenuItemIndex = 0;
+                }
+            }
+
+            if (InputManager.KeyPressed(Keys.Up))
+            {
+                m_CurrentMenuItemIndex--;
+                if (m_CurrentMenuItemIndex == -1)
+                {
+                    m_CurrentMenuItemIndex = r_MenuItemList.Count - 1;
+                }
+            }
+        }
+
+        private void updateUserChoise()
+        {
+            if (InputManager.KeyPressed(Keys.Enter))
+            {
+                switch (m_CurrentMenuItemIndex)
+                {
+                    //Screen Settings
+                    case 0:
+                        ScreensManager.SetCurrentScreen(new ScreenSettings(Game));
+                        break;
+
+                    //User wants to toggle the number of players, but they have to use Page up/ down.
+                    case 1:
+                        break;
+
+                    //Sound Settings screen.
+                    case 2:
+                        ScreensManager.SetCurrentScreen(new SoundSettings(Game));
+                        break;
+
+                    //Play Game
+                    case 3:
+                        ExitScreen();
+                        break;
+
+                    //Quit Game (Exit)
+                    case 4:
+                        Game.Exit();
+                        break;
+                }
+            }
+
+            if (InputManager.KeyPressed(Keys.PageUp) || InputManager.KeyPressed(Keys.PageUp))
+            {
+                if (m_CurrentMenuItemIndex == 1)
+                {
+                    toggleNumberOfPlayers();
+                }
+            }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            try
+            {
+                SpriteBatch.Begin();
+                drawMenuItems();
+            }
+            finally {
+                SpriteBatch.End();
+            } 
+        }
+
+        private void drawMenuItems()
+        {
+            SpriteFont fontCalibri = ContentManager.Load<SpriteFont>(@"Fonts\Calibri");
+
+            Color activeMenuItemColor = Color.Pink;
+            Color nonactiveMenuItem = Color.White;
+            Color currentColor = Color.White;
+
+            int offset = 35;
+            int currentIndex = 0;
+
+            foreach (string menuItem in r_MenuItemList)
+            {
+                Vector2 position = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2 + (offset * currentIndex));
+
+                if (currentIndex == m_CurrentMenuItemIndex)
+                {
+                    currentColor = activeMenuItemColor;
                 }
                 else
                 {
-                    lastOption = k_BackOption;
+                    currentColor = nonactiveMenuItem;
                 }
 
-                createMenu(subMenu, lastOption);
-
-                int userChoice = subMenu.MenuItems.Count;
-
-                if (userChoice == 0)
-                {
-                    if (exitOptionExists)
-                    {
-                        wantsToStay = false;
-                    }
-                    else
-                    {
-                        this.m_MainMenuFlowStack.Pop();
-                    }
-                }
-                else
-                {
-                    MenuItem chosenMenuItem = subMenu.MenuItems[userChoice - 1];
-
-                    if (chosenMenuItem is SubMenu)
-                    {
-                        this.m_MainMenuFlowStack.Push(chosenMenuItem as SubMenu);
-                    }
-                    else if (chosenMenuItem is OperationOption)
-                    {
-                        GraphicsManager.GraphicsDevice.Clear(Color.Black);
-                        (chosenMenuItem as OperationOption).RunProgram();
-                        Console.ReadLine();
-                    }
-                }
-
-                Console.Clear();
+                SpriteBatch.DrawString(fontCalibri, $"{r_MenuItemList[currentIndex]}", position, currentColor);
+                currentIndex++;
             }
-            while (wantsToStay);
-        }
-
-        private string createMenu(SubMenu i_Menu, string i_LastOption)
-        {
-            StringBuilder menuItemForPrint = new StringBuilder(string.Format("{0}{1}", i_Menu.MenuHeader, System.Environment.NewLine));
-            menuItemForPrint.Append('-', i_Menu.MenuHeader.Length);
-            menuItemForPrint.AppendLine(System.Environment.NewLine);
-            int operationsIndex = i_Menu.MenuItems.Count;
-
-            for (int i = 1; i <= operationsIndex; i++)
-            {
-                menuItemForPrint.AppendLine(string.Format(@"{0}. {1}", i, i_Menu.MenuItems[i - 1].MenuHeader));
-            }
-
-            string menuItemForPrintWithExitOrBackOption = menuItemForPrint.AppendLine(string.Format("{0}. {1}", k_BackorExitIndex, i_LastOption)).ToString();
-            string requestFromUser = string.Format("Please enter your choice: ({0} - {1} or 0 for {2}):", k_MinNumberForUserSelection, operationsIndex, i_LastOption.ToLower());
-            return string.Format(@"{0}{1}{2}", menuItemForPrintWithExitOrBackOption, Environment.NewLine, requestFromUser);
         }
     }
 }

@@ -25,14 +25,18 @@ namespace GameScreens.Screens
             base.Draw(gameTime);
 
             SpriteBatch.Begin();
+            drawInstructions();
+            SpriteBatch.End();
+        }
+
+        private void drawInstructions()
+        {
             SpriteBatch.DrawString(m_FontCalibri, @"
 [ Instructions ]
 Use the arrows to move the walking square.
 Try to avoid reaching thr right of the screen..
 
 R - Resume Game", m_MsgPosition, Color.White);
-
-            SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

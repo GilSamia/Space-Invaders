@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceInvaders.Screens.MainMenu;
 using Infrastructure.Managers;
 using SpaceInvaders.Menus;
 
@@ -52,8 +51,8 @@ namespace GameScreens.Screens
 
             if (InputManager.KeyPressed(Keys.M))
             {
-                MainMenu mainMenuDelegate = DelegatesMenu.CreateDelegatesMenu(r_Game);
-                mainMenuDelegate.InitializeMainMenu();
+                ScreensManager.SetCurrentScreen(new MainMenu(r_Game));
+                ExitScreen();
             }
         }
         public override void Draw(GameTime i_GameTime)
