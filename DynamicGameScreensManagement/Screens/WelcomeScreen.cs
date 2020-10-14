@@ -25,8 +25,6 @@ namespace GameScreens.Screens
             : base (i_Game)
         {
             r_Game = i_Game;
-            //m_Background = new Background(i_Game, @"Sprites\BG_Space01_1024x768", 1);
-            //this.Add(m_Background);
         }
 
         public override void Initialize()
@@ -52,8 +50,8 @@ namespace GameScreens.Screens
 
             if (InputManager.KeyPressed(Keys.M))
             {
-                ScreensManager.SetCurrentScreen(new MainMenu(r_Game));
                 ExitScreen();
+                ScreensManager.SetCurrentScreen(new MainMenu(r_Game));
             }
         }
         public override void Draw(GameTime i_GameTime)

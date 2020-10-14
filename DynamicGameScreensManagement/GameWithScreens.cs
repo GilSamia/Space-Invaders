@@ -20,8 +20,8 @@ namespace SpaceInvaders
         {
             m_GraphicsManager = new GraphicsDeviceManager(this);
 
-            m_GraphicsManager.PreferredBackBufferWidth = 750;
-            m_GraphicsManager.PreferredBackBufferHeight = 600;
+            m_GraphicsManager.PreferredBackBufferWidth = 1500;
+            m_GraphicsManager.PreferredBackBufferHeight = 1500;
             m_GraphicsManager.ApplyChanges();
 
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);

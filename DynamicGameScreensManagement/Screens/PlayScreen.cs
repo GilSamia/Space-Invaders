@@ -39,10 +39,6 @@ namespace GameScreens.Screens
         public PlayScreen(Game i_Game)
             : base(i_Game)
         {
-            //WalkingSquare walkingSquare = new WalkingSquare(i_Game);
-            //walkingSquare.PositionChanged += walkingSquare_PositionChanged;
-            //this.Add(walkingSquare);
-
             m_GameInstructionsScreen = new GameInstructionsScreen(i_Game);
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
@@ -67,7 +63,6 @@ namespace GameScreens.Screens
                 m_IsInit = true;
             }
         }
-
 
         public void addBarriers()
         {

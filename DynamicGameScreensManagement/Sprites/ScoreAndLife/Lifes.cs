@@ -1,14 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Sprites.ScoreAndLife
 {
     internal class Lifes
     {
         private readonly SpaceShipLife[] r_SpaceShipLives;
-        private readonly Game r_Game;
+        private readonly GameScreen r_Game;
         private readonly SpaceShip r_SpaceShip;
 
-        public Lifes(Game i_Game, SpaceShip i_SpaceShip)
+        public Lifes(GameScreen i_Game, SpaceShip i_SpaceShip)
         {
             r_SpaceShip = i_SpaceShip;
             r_SpaceShipLives = new SpaceShipLife[r_SpaceShip.PlayerInformation.MaxLife];

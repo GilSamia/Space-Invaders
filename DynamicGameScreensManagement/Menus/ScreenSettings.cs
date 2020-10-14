@@ -16,14 +16,14 @@ namespace SpaceInvaders.Menus
         private bool m_AllowWindowResizing;
         private bool m_FullScreenOn;
         private bool m_MouseVisable;
-        private int m_CurrentItemIndex;
+        private int m_CurrentMenuItemIndex;
 
         public ScreenSettings(Game i_Game) : base(i_Game)
         {
             r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             this.Add(m_Background);
-            m_CurrentItemIndex = 0;
+            m_CurrentMenuItemIndex = 0;
 
             m_AllowWindowResizing = false;
             m_FullScreenOn = false;
@@ -88,29 +88,34 @@ namespace SpaceInvaders.Menus
         {
             if (InputManager.KeyPressed(Keys.Down))
             {
-                m_CurrentItemIndex++;
-                if (m_CurrentItemIndex == r_MenuItemList.Count)
+                m_CurrentMenuItemIndex++;
+                if (m_CurrentMenuItemIndex == r_MenuItemList.Count)
                 {
-                    m_CurrentItemIndex = 0;
+                    m_CurrentMenuItemIndex = 0;
                 }
             }
 
             if (InputManager.KeyPressed(Keys.Up))
             {
-                m_CurrentItemIndex--;
-                if (m_CurrentItemIndex == -1)
+                m_CurrentMenuItemIndex--;
+                if (m_CurrentMenuItemIndex == -1)
                 {
-                    m_CurrentItemIndex = r_MenuItemList.Count - 1;
+                    m_CurrentMenuItemIndex = r_MenuItemList.Count - 1;
                 }
             }
         }
 
         private void updateMenuItem()
         {
+            if (InputManager.KeyPressed(Keys.Enter) && m_CurrentMenuItemIndex == 3)
+            {
+                ExitScreen();
+            }
+
             if ((InputManager.KeyPressed(Keys.PageUp) || InputManager.KeyPressed(Keys.PageDown)))
             {
 
-                switch (m_CurrentItemIndex)
+                switch (m_CurrentMenuItemIndex)
                 {
                     //Allow Window Resizing
                     case 0:
@@ -129,10 +134,11 @@ namespace SpaceInvaders.Menus
 
                     //Done
                     case 3:
-                        ExitScreen();
+                        //ExitScreen();
                         break;
                 }
             }
+
         }
 
         private void toggleMouseVisability()
@@ -187,7 +193,7 @@ namespace SpaceInvaders.Menus
             {
                 Vector2 position = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2 + (offset * currentIndex));
 
-                if (currentIndex == m_CurrentItemIndex)
+                if (currentIndex == m_CurrentMenuItemIndex)
                 {
                     currentColor = activeMenuItemColor;
                 }

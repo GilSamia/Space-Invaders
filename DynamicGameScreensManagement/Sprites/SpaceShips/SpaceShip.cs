@@ -117,13 +117,13 @@ namespace SpaceInvaders.Sprites
             addScoreFont();
             TexutreSize = Texture.Width;
             //m_ShootingSound = this.Content.Load<SoundEffect>("Sounds/BGMusic").CreateInstance();
-            //m_BackgroundSounds.Play();
+            //m_ShootingSound.Play();
 
         }
 
         private void addLifes()
         {
-            m_PlayerLifes = new Lifes(Game, this);
+            m_PlayerLifes = new Lifes(r_Game, this);
         }
 
         protected override void InitOrigins()

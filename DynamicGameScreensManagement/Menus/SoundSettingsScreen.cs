@@ -94,6 +94,11 @@ namespace SpaceInvaders.Menus
 
         private void updateUserChoise()
         {
+            if (InputManager.KeyPressed(Keys.Enter) && m_CurrentMenuItemIndex == 3)
+            {
+                ExitScreen();
+            }
+
             if (InputManager.KeyPressed(Keys.PageUp) || InputManager.KeyPressed(Keys.PageDown))
             {
                 if (InputManager.KeyPressed(Keys.PageUp))
@@ -109,6 +114,11 @@ namespace SpaceInvaders.Menus
 
         private void updateMenuItem(bool i_increase)
         {
+            if (InputManager.KeyPressed(Keys.Enter) && m_CurrentMenuItemIndex == 3)
+            {
+                ExitScreen();
+            }
+
             switch (m_CurrentMenuItemIndex)
             {
                 //Toggle Sound
@@ -146,7 +156,7 @@ namespace SpaceInvaders.Menus
 
                 //Done
                 case 3:
-                    ExitScreen();
+                    //                    ExitScreen();
                     break;
             }
         }

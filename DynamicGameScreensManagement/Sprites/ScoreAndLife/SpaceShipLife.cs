@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
@@ -8,15 +9,19 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
 {
     internal class SpaceShipLife : Sprite, IDeadable
     {
+        private GameScreen r_Game;
+
         private readonly int r_LifeIndex;
         private readonly int r_PlayerIndex;
         private readonly TimeSpan r_BlinkTimeAnimation = TimeSpan.FromSeconds(1 / 8f);
         private readonly TimeSpan r_BlinkLengthAnimation = TimeSpan.FromSeconds(2);
 
-        public SpaceShipLife(string i_AssetName, Game i_Game, int i_PlayerIndex, int i_LifeIndex) : base(i_AssetName, i_Game)
+        public SpaceShipLife(string i_AssetName, GameScreen i_Game, int i_PlayerIndex, int i_LifeIndex) : base(i_AssetName, i_Game.Game)
         {
             r_LifeIndex = i_LifeIndex;
             r_PlayerIndex = i_PlayerIndex;
+            r_Game = i_Game;
+            r_Game.Add(this);
         }
 
         public override void Initialize()
@@ -25,7 +30,7 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
             setPosition();
             setScale();
             setOpacity();
-            addAnimation();
+            //addAnimation();
         }
 
         private void addAnimation()
@@ -37,7 +42,7 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
 
         private void animations_Finished(object sender, EventArgs e)
         {
-            Game.Components.Remove(this);
+            r_Game.Remove(this);
             Dispose();
         }
 
@@ -61,7 +66,8 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
 
         public void OnKill(IShooter i_MyKiller)
         {
-            m_Animations.Restart();
+            //r_Game.Remove(this);
+            //m_Animations.Restart();
         }
 
         public override void Draw(GameTime i_GameTime)
