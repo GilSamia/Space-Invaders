@@ -3,6 +3,7 @@ using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
@@ -88,7 +89,7 @@ namespace SpaceInvaders.Sprites
 
         private void distroyedAnimations_Finished(object sender, EventArgs e)
         {
-            Game.Components.Remove(this);
+            r_Game.Remove(this);
             m_IsDying = false;
             this.Dispose();
         }
@@ -116,9 +117,6 @@ namespace SpaceInvaders.Sprites
             addLifes();
             addScoreFont();
             TexutreSize = Texture.Width;
-            //m_ShootingSound = this.Content.Load<SoundEffect>("Sounds/BGMusic").CreateInstance();
-            //m_ShootingSound.Play();
-
         }
 
         private void addLifes()
@@ -161,6 +159,7 @@ namespace SpaceInvaders.Sprites
             if (m_InputManager.KeyPressed(m_PlayerData.KeyShoot))
             {
                 shoot();
+
             }
 
             m_DistroyedAnimations.Update(i_GameTime);
@@ -171,6 +170,7 @@ namespace SpaceInvaders.Sprites
         {
             if (canShoot())
             {
+                (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
                 Bullet bullet = new SpaceShipBullet(r_Game, this);
                 m_BulletsCounter++;
             }

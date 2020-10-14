@@ -4,12 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameScreens.Sprites;
 using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.Menus
 {
     class ScreenSettings : GameScreen
     {   
-        private readonly Game r_Game;
+        private readonly GameWithScreens r_Game;
         private Background m_Background;
         private readonly List<string> r_MenuItemList;
 
@@ -18,7 +19,7 @@ namespace SpaceInvaders.Menus
         private bool m_MouseVisable;
         private int m_CurrentMenuItemIndex;
 
-        public ScreenSettings(Game i_Game) : base(i_Game)
+        public ScreenSettings(GameWithScreens i_Game) : base(i_Game)
         {
             r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
@@ -88,6 +89,7 @@ namespace SpaceInvaders.Menus
         {
             if (InputManager.KeyPressed(Keys.Down))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex++;
                 if (m_CurrentMenuItemIndex == r_MenuItemList.Count)
                 {
@@ -97,6 +99,7 @@ namespace SpaceInvaders.Menus
 
             if (InputManager.KeyPressed(Keys.Up))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex--;
                 if (m_CurrentMenuItemIndex == -1)
                 {

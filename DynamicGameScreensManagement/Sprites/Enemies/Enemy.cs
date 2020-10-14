@@ -3,6 +3,7 @@ using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
 using SpaceInvaders.Sprites.Bullets;
@@ -30,7 +31,7 @@ namespace SpaceInvaders.Sprites.Enemies
         private CompositeAnimator m_JumpAnimators;
         private JumpXAnimator m_JumpAnimator;
 
-        private const int k_MaxTimeToShoot = 30;
+        private const int k_MaxTimeToShoot = 50;
         private readonly RandomTimer r_RandomTimer = new RandomTimer(k_MaxTimeToShoot);
         private static readonly Random r_Random = new Random();
         private int m_BulletCounter;
@@ -141,7 +142,7 @@ namespace SpaceInvaders.Sprites.Enemies
 
         private void Enemy_AnimationFinished(object sender, EventArgs e)
         {
-            Game.Components.Remove(this);
+            r_Game.Remove(this);
         }
 
         public EnemyData EnemyData { get { return r_EnemyData; } }
@@ -175,6 +176,7 @@ namespace SpaceInvaders.Sprites.Enemies
             {
                 Bullet bullet = new EnemyBullet(r_Game, this);
                 m_BulletCounter++;
+                (Game as GameWithScreens).SpriteSoundEffects["EnemyGunShot"].Play();
             }
         }
 
@@ -190,6 +192,7 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public void OnKill(IShooter i_MyKiller)
         {
+            (Game as GameWithScreens).SpriteSoundEffects["EnemyKill"].Play();
             m_JumpAnimators.Reset();
             m_Animations.Restart();
             this.Dispose();

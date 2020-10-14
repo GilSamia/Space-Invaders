@@ -5,20 +5,22 @@ using Microsoft.Xna.Framework.Input;
 using GameScreens.Sprites;
 using Infrastructure.ObjectModel.Screens;
 using System;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.Menus
 {
     class MainMenu : GameScreen
     {
-        private readonly Game r_Game;
+        private readonly GameWithScreens r_Game;
         private Background m_Background;
         private readonly List<string> r_MenuItemList;
         private MenuOperations m_MenuOperations;
         private int m_NumberOfPlayers;
         private int m_CurrentMenuItemIndex;
 
-        public MainMenu(Game i_Game) : base(i_Game)
+        public MainMenu(GameWithScreens i_Game) : base(i_Game)
         {
+            r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             this.Add(m_Background);
 
@@ -80,8 +82,10 @@ namespace SpaceInvaders.Menus
 
         private void updateCircularMenuPosition()
         {
+
             if (InputManager.KeyPressed(Keys.Down))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex++;
                 if (m_CurrentMenuItemIndex == r_MenuItemList.Count)
                 {
@@ -91,6 +95,7 @@ namespace SpaceInvaders.Menus
 
             if (InputManager.KeyPressed(Keys.Up))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex--;
                 if (m_CurrentMenuItemIndex == -1)
                 {
@@ -107,7 +112,7 @@ namespace SpaceInvaders.Menus
                 {
                     //Screen Settings
                     case 0:
-                        ScreensManager.SetCurrentScreen(new ScreenSettings(Game));
+                        ScreensManager.SetCurrentScreen(new ScreenSettings(r_Game));
                         break;
 
                     //User wants to toggle the number of players, but they have to use Page up/ down.
@@ -116,7 +121,7 @@ namespace SpaceInvaders.Menus
 
                     //Sound Settings screen.
                     case 2:
-                        ScreensManager.SetCurrentScreen(new SoundSettings(Game));
+                        ScreensManager.SetCurrentScreen(new SoundSettings(r_Game));
                         break;
 
                     //Play Game

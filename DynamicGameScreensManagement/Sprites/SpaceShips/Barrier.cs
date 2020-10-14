@@ -2,6 +2,7 @@
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Sprites.Bullets;
 using SpaceInvaders.Sprites.Enemies;
@@ -109,6 +110,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         private void hasHit(Bullet i_Bullet, Vector2 i_HitPosition, int i_Direction)
         {
+            (Game as GameWithScreens).SpriteSoundEffects["BarrierHit"].Play();
             int barrierDamageHeight = (int)(i_Bullet.Height * k_BulletDamage);
             Vector2 currentPixel = i_HitPosition;
 

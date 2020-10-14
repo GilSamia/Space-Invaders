@@ -4,12 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ObjectModel.Screens;
 using GameScreens.Sprites;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.Menus
 {
     class SoundSettings : GameScreen
     {
-        private readonly Game r_Game;
+        private readonly GameWithScreens r_Game;
         private readonly Background r_Background;
 
         private readonly List<string> r_MenuItemList;
@@ -19,7 +20,7 @@ namespace SpaceInvaders.Menus
         private int m_BackgroundMusicVolume;
         private int m_SoundEffectVolume;
 
-        public SoundSettings(Game i_Game) : base(i_Game)
+        public SoundSettings(GameWithScreens i_Game) : base(i_Game)
         {
             r_Game = i_Game;
             r_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
@@ -75,6 +76,7 @@ namespace SpaceInvaders.Menus
         {
             if (InputManager.KeyPressed(Keys.Down))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex++;
                 if (m_CurrentMenuItemIndex == r_MenuItemList.Count)
                 {
@@ -84,6 +86,7 @@ namespace SpaceInvaders.Menus
 
             if (InputManager.KeyPressed(Keys.Up))
             {
+                r_Game.MenuMoveSound.Play();
                 m_CurrentMenuItemIndex--;
                 if (m_CurrentMenuItemIndex == -1)
                 {
@@ -151,7 +154,7 @@ namespace SpaceInvaders.Menus
                         m_SoundEffectVolume -= 10;
                     }
 
-                    r_MenuItemList[1] = string.Format("Sounds Effects Volume: {0}", m_SoundEffectVolume);
+                    r_MenuItemList[2] = string.Format("Sounds Effects Volume: {0}", m_SoundEffectVolume);
                     break;
 
                 //Done

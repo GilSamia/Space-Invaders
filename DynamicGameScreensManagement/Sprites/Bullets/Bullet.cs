@@ -9,6 +9,7 @@ namespace SpaceInvaders.Sprites.Bullets
 {
     internal abstract class Bullet : Sprite, ICollidable2D
     {
+        private readonly GameScreen r_Game;
         private const string k_AssetName = @"Sprites/Bullet";
         protected readonly IShooter r_Shooter;
         protected const float k_BulletSpeed = 140F;
@@ -19,8 +20,9 @@ namespace SpaceInvaders.Sprites.Bullets
 
         public Bullet(GameScreen i_Game, IShooter i_Shooter) : base(k_AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             r_Shooter = i_Shooter;
-            i_Game.Add(this);
+            r_Game.Add(this);
         }
 
         public override void Initialize()
@@ -52,7 +54,7 @@ namespace SpaceInvaders.Sprites.Bullets
         public void RemoveBullet()
         {
             r_Shooter.ReduceBulletsByOne();
-            Game.Components.Remove(this);
+            r_Game.Remove(this);
             this.Dispose();
         }
 

@@ -9,19 +9,21 @@ using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.Managers;
 using SpaceInvaders.Menus;
+using Microsoft.Xna.Framework.Audio;
+using SpaceInvaders;
 
 namespace GameScreens.Screens
 {
     public class WelcomeScreen : GameScreen
     {
-        private readonly Game r_Game;
+        private readonly GameWithScreens r_Game;
 
         private Sprite m_WelcomeMessage;
         private Sprite m_PressEnterMsg;
 
         private Background m_Background;
 
-        public WelcomeScreen(Game i_Game)
+        public WelcomeScreen(GameWithScreens i_Game)
             : base (i_Game)
         {
             r_Game = i_Game;
@@ -40,16 +42,19 @@ namespace GameScreens.Screens
 
             if (InputManager.KeyPressed(Keys.Enter))
             {
+                r_Game.MenuMoveSound.Play();
                 ExitScreen();
             }
 
             if (InputManager.KeyPressed(Keys.Escape))
             {
+                r_Game.MenuMoveSound.Play();
                 this.Game.Exit();
             }
 
             if (InputManager.KeyPressed(Keys.M))
             {
+                r_Game.MenuMoveSound.Play();
                 ExitScreen();
                 ScreensManager.SetCurrentScreen(new MainMenu(r_Game));
             }

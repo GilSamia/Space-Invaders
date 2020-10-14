@@ -2,6 +2,7 @@
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
 using SpaceInvaders.Sprites.Bullets;
@@ -91,6 +92,7 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public void OnKill(IShooter i_MyKiller)
         {
+            (Game as GameWithScreens).SpriteSoundEffects["MotherShipKill"].Play();
             m_IsDying = true;
             Velocity = new Vector2(0);
             m_Animations.Restart();

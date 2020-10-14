@@ -1,6 +1,7 @@
 ﻿using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
 using System;
@@ -66,6 +67,7 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
 
         public void OnKill(IShooter i_MyKiller)
         {
+            (Game as GameWithScreens).SpriteSoundEffects["LifeDie"].Play();
             //r_Game.Remove(this);
             //m_Animations.Restart();
         }
