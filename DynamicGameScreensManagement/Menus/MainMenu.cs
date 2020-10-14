@@ -19,7 +19,7 @@ namespace SpaceInvaders.Menus
 
         public MainMenu(Game i_Game) : base(i_Game)
         {
-            m_Background = new Background(i_Game, @"Sprites\BG_Space01_1024x768", 1);
+            m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             this.Add(m_Background);
 
             m_NumberOfPlayers = 1;

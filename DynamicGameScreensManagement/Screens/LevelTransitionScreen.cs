@@ -16,7 +16,7 @@ namespace SpaceInvaders.Screens
 
         public LevelTransitionScreen(Game i_Game, int i_Level) : base(i_Game)
         {
-            m_Background = new Background(i_Game, @"Sprites\BG_Space01_1024x768", 1);
+            m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             m_Level = i_Level;
             m_SecondsShow = TimeSpan.FromSeconds(2.5);
 

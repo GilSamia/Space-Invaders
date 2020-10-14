@@ -16,7 +16,6 @@ namespace SpaceInvaders
         SoundEffectInstance m_BackgroundSounds;
         private ScreensMananger m_ScreensManager;
 
-
         public GameWithScreens()
         {
             m_GraphicsManager = new GraphicsDeviceManager(this);
@@ -24,6 +23,8 @@ namespace SpaceInvaders
             m_GraphicsManager.PreferredBackBufferWidth = 750;
             m_GraphicsManager.PreferredBackBufferHeight = 600;
             m_GraphicsManager.ApplyChanges();
+
+            m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
 
             this.Content.RootDirectory = "Content";
 
@@ -43,9 +44,8 @@ namespace SpaceInvaders
 
         protected override void Initialize()
         {
-
             base.Initialize();
-            //add_Sound();
+            addSound();
         }
 
         public void addSound()
@@ -57,7 +57,7 @@ namespace SpaceInvaders
 
         protected override void Draw(GameTime i_GameTime)
         {
-            m_GraphicsManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+            m_GraphicsManager.GraphicsDevice.Clear(Color.White);
 
             base.Draw(i_GameTime);
         }

@@ -142,8 +142,8 @@ namespace Infrastructure.ObjectModel.Screens
         protected override void LoadContent()
         {
             base.LoadContent();
-            //m_GradientTexture = this.ContentManager.Load<Texture2D>(@"Screens\gradient");
-            //m_BlankTexture = this.ContentManager.Load<Texture2D>(@"Screens\blank");
+            m_GradientTexture = this.ContentManager.Load<Texture2D>(@"Sprites\gradient");
+            m_BlankTexture = this.ContentManager.Load<Texture2D>(@"Sprites\blank");
         }
 
         protected bool m_UseGradientBackground = false;

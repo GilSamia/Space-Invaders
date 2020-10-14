@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Infrastructure.ServiceInterfaces;
+using Infrastructure.ObjectModel.Screens;
 
 namespace Infrastructure.ObjectModel
 {
@@ -37,6 +38,11 @@ namespace Infrastructure.ObjectModel
             this.AssetName = i_AssetName;
             this.UpdateOrder = i_UpdateOrder;
             this.DrawOrder = i_DrawOrder;
+
+            // register in the game:
+            //this.Game.Components.Add(this);
+            //GameWithScreens.Components.Add(this);
+            //(Game as GameWithScreens).Add(this);
         }
 
         public LoadableDrawableComponent(

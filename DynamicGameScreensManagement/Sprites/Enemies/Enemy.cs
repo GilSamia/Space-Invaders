@@ -48,6 +48,7 @@ namespace SpaceInvaders.Sprites.Enemies
             s_JumpYDelta = 0;
             r_EnemyMatrix = i_EnemyMatrix;
             m_BulletCounter = 0;
+            i_Game.Add(this);
         }
 
         public override void Initialize()

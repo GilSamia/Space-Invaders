@@ -11,6 +11,7 @@ using SpaceInvaders.Sprites.Enemies;
 using SpaceInvaders.Sprites.SpaceShips;
 using SpaceInvaders.Utils;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameScreens.Screens
 {
@@ -21,6 +22,7 @@ namespace GameScreens.Screens
         private EnemyMatrix m_EnemyMatrix;
         private MotherShip m_MotherShip;
         private Barriers m_Barriers;
+        private bool m_IsInit = false;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
 
         private bool m_IsGameOver = false;
@@ -41,53 +43,60 @@ namespace GameScreens.Screens
             //walkingSquare.PositionChanged += walkingSquare_PositionChanged;
             //this.Add(walkingSquare);
 
-
             m_GameInstructionsScreen = new GameInstructionsScreen(i_Game);
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
-            Initialize();
-
         }
 
         public override void Initialize()
         {
-            addManagers();
-            //addBackground();
-            addSpaceShips();
-            addMotherShip();
-            addBarriers();
-            addEnemyMatrix();
-
+            initializeGameComponents();
             base.Initialize();
         }
+
+        private void initializeGameComponents()
+        {
+            if (!m_IsInit)
+            {
+                //addManagers();
+                addBackground();
+                addSpaceShips();
+                addMotherShip();
+                addBarriers();
+                addEnemyMatrix();
+                m_IsInit = true;
+            }
+        }
+
 
         public void addBarriers()
         {
             m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32");
+            //this.Add(m_Barriers);
         }
 
         public void addEnemyMatrix()
         {
             m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32");
+            //this.Add(m_EnemyMatrix);
         }
 
         private void addMotherShip()
         {
             m_MotherShip = new MotherShip(this);
+            //this.Add(m_MotherShip);
         }
 
         private void addManagers()
         {
-            //new InputManager(r_Game);
-            //new CollisionsManager(r_Game);
+            new InputManager(r_Game);
+            new CollisionsManager(r_Game);
         }
 
         private void addBackground()
         {
-            m_Background = new Background(r_Game, @"Sprites\BG_Space01_1024x768", 1);
-            this.Add(m_Background);
-            //m_Background = new Background(r_Game, r_Game.Graphics);
-            //TODO: Maybe delete this
+            m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
+            //this.Add(m_Background);
         }
 
         private void addSpaceShips()
@@ -114,7 +123,7 @@ namespace GameScreens.Screens
         {
             m_SpriteBatch = new SpriteBatch(r_Game.GraphicsDevice);
             m_FontCalibri = ContentManager.Load<SpriteFont>(@"Fonts\Calibri");
-//            base.LoadContent();
+            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -134,30 +143,7 @@ namespace GameScreens.Screens
 
         public override void Draw(GameTime i_GameTime)
         {
-            try
-            {
-                m_SpriteBatch.Begin();
-                Texture2D texture = r_Game.Content.Load<Texture2D>(r_BackgroundTexturePath);
-                m_SpriteBatch.Draw(texture, m_BackgroundPosition, r_BackgroundTint);
-                drawGameComponents(i_GameTime);
-
-                base.Draw(i_GameTime);
-            }
-            finally
-            {
-                m_SpriteBatch.End();
-            }
-        }
-
-        private void drawGameComponents(GameTime i_GameTime)
-        {
-            foreach (SpaceShip ship in r_SpaceShips)
-            {
-                ship.Draw(i_GameTime);
-            }
-            m_EnemyMatrix.Draw(i_GameTime);
-            m_MotherShip.Draw(i_GameTime);
-            m_Barriers.Draw(i_GameTime);
+            base.Draw(i_GameTime);
         }
     }
 }

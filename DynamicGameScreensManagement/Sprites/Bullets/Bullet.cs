@@ -19,9 +19,13 @@ namespace SpaceInvaders.Sprites.Bullets
         public Bullet(Game i_Game, IShooter i_Shooter) : base(k_AssetName, i_Game)
         {
             r_Shooter = i_Shooter;
-            initPosition();
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            initPosition();
+        }
         public IShooter Shooter
         {
             get { return r_Shooter; }

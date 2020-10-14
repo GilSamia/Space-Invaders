@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.ServiceInterfaces;
 using Infrastructure.ObjectModel.Animators;
+using Infrastructure.ObjectModel.Screens;
 
 namespace Infrastructure.ObjectModel
 {
@@ -263,6 +264,14 @@ namespace Infrastructure.ObjectModel
         public Sprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
         { }
+        private GameScreen m_GameScreen;
+
+        public Sprite(string i_AssetName, Game i_Game, GameScreen i_GameScreen)
+        : base(i_AssetName, i_Game, int.MaxValue)
+        {
+            m_GameScreen = i_GameScreen;
+            m_GameScreen.Add(this);
+        }
 
         /// <summary>
         /// Default initialization of bounds

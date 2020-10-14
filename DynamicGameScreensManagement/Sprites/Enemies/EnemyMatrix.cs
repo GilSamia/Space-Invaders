@@ -42,6 +42,7 @@ namespace SpaceInvaders.Sprites.Enemies
             : base(i_AssetName, i_Game.Game)
         {
             r_GameScreen = i_Game;
+            i_Game.Add(this);
         }
         internal void KillEnemyAt(Point i_EnemyPoint)
         {
@@ -52,8 +53,8 @@ namespace SpaceInvaders.Sprites.Enemies
         public override void Initialize()
         {
             base.Initialize();
-
             initializeEnemyMatrix();
+
         }
 
         private void initializeEnemyMatrix()

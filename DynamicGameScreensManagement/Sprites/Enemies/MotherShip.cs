@@ -28,7 +28,7 @@ namespace SpaceInvaders.Sprites.Enemies
         public int Score => k_ScoreOfKillingMotherShip;
 
         public MotherShip(GameScreen i_Game)
-           : base(k_AssteName, i_Game.Game)
+           : base(k_AssteName, i_Game.Game, i_Game)
         {
             TintColor = Color.Red;
         }
@@ -36,10 +36,16 @@ namespace SpaceInvaders.Sprites.Enemies
         public override void Initialize()
         {
             base.Initialize();
+
             initVelocity();
             initPosition();
             initTimer();
             initAnimations();
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
         }
 
         private void initVelocity()

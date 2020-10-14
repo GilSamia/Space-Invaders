@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 
 namespace GameScreens.Sprites
 {
     public class Background : Sprite
     {
-        public Background(Game i_Game, string i_AssetName, int i_Opacity)
-            : base(i_AssetName, i_Game)
+        public Background(GameScreen i_Game, string i_AssetName, int i_Opacity)
+            : base(i_AssetName, i_Game.Game)
         {
             this.Opacity = i_Opacity;
         }
@@ -25,6 +22,11 @@ namespace GameScreens.Sprites
         public override void Initialize()
         {
             base.Initialize();
+        }
+
+        public override void Draw(GameTime i_GameTime)
+        {
+            base.Draw(i_GameTime);
         }
     }
 }
