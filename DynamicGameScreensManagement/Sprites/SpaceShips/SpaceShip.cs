@@ -37,6 +37,8 @@ namespace SpaceInvaders.Sprites
         private const float k_RotationSpeed = 6f * MathHelper.TwoPi;
         private CompositeAnimator m_DistroyedAnimations;
 
+        private PlayerInformation m_PlayerInformation;
+
         private readonly TimeSpan r_KillTimeAnimation = TimeSpan.FromSeconds(2.6f);
         private readonly TimeSpan r_BlinkTimeAnimation = TimeSpan.FromSeconds(1 / 8f);
         private readonly TimeSpan r_BlinkLengthAnimation = TimeSpan.FromSeconds(2);
@@ -105,12 +107,13 @@ namespace SpaceInvaders.Sprites
         {
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
-            
-            int score = this.PlayerInformation.CurrentScore;
-            (r_Game as PlayScreen).OnGameOver("Scores are this and that", 1);
+
+            m_ScoreText.removeContent();
+            //TODO:Remove the text...
 
             r_Game.Remove(this);
             this.Dispose();
+            (r_Game as PlayScreen).OnGameOver();
         }
 
         public override void Initialize()

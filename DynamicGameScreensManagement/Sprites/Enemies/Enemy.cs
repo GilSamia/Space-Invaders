@@ -167,7 +167,7 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             if (Position.Y + Texture.Height >= SpaceShip.PositionY)
             {
-                (r_Game as PlayScreen).OnGameOver("LALALA", 1);
+                (r_Game as PlayScreen).OnGameOver();
             }
         }
 

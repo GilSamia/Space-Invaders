@@ -47,5 +47,11 @@ namespace SpaceInvaders.Sprites
         {
             m_SpriteBatch.DrawString(m_Font, Text, Position, FontColor, Rotation, RotationOrigin, Scales, SpriteEffects.None, LayerDepth);
         }
+
+        public void removeContent()
+        {
+            r_Game.Remove(this);
+
+        }
     }
 }

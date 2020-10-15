@@ -28,11 +28,10 @@ namespace GameScreens.Screens
         private bool m_FirstGamingRound = true;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
 
-        private int m_Player1Score;
-        private int m_Player2Score;
-        private int m_CurrentLevel;
+        private const float k_BarrierSpeedIncrement = 1.6f;
+        private float m_BarrierSpeed = 35f;
 
-        private bool m_IsGameOver = false;
+        private int m_CurrentLevel;
 
         private GameInstructionsScreen m_GameInstructionsScreen;
         private PauseScreen m_PauseScreen;
@@ -56,7 +55,6 @@ namespace GameScreens.Screens
         {
             get { return m_CurrentLevel; }
         }
-
 
         public override void Initialize()
         {
@@ -117,13 +115,11 @@ namespace GameScreens.Screens
             }
         }
 
-        public void OnGameOver(string i_Scores, int i_WinningPlayerIndex)
+        public void OnGameOver()
         {
             r_Game.Components.Remove(this);
             Game.Components.Remove(this);
             ExitScreen();
-
-
 
             ScreensManager.SetCurrentScreen(new GameOverScreen(Game, buildMessage()));
         }
@@ -182,7 +178,7 @@ namespace GameScreens.Screens
         public void moveLevel()
         {
             m_CurrentLevel++;
-            (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
+            (Game as GameWithScreens).SpriteSoundEffects["LevelWin"].Play();
             (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, m_CurrentLevel));
             base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, m_CurrentLevel));
             ExitScreen();
