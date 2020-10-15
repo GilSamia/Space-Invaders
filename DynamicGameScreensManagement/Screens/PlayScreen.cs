@@ -19,19 +19,20 @@ namespace GameScreens.Screens
 {
     public class PlayScreen : GameScreen
     {
+        internal const int k_NumberOfCols = 1;
+        private const float k_BarrierSpeedIncrement = 1.6f;
+
+        private int m_CurrentLevel;
         private readonly Game r_Game;
         private Background m_Background;
+
         private EnemyMatrix m_EnemyMatrix;
         private MotherShip m_MotherShip;
         private Barriers m_Barriers;
-        private bool m_IsInit = false;
-        private bool m_FirstGamingRound = true;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
 
-        private const float k_BarrierSpeedIncrement = 1.6f;
-        private float m_BarrierSpeed = 35f;
-
-        private int m_CurrentLevel;
+        private bool m_IsInit = false;
+        private bool m_FirstGamingRound = true;
 
         private GameInstructionsScreen m_GameInstructionsScreen;
         private PauseScreen m_PauseScreen;
@@ -83,7 +84,7 @@ namespace GameScreens.Screens
 
         public void addEnemyMatrix()
         {
-            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32", m_CurrentLevel);
+            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32", m_CurrentLevel, ((CurrentLevel - 1) % 4) + k_NumberOfCols);
         }
 
         private void addMotherShip()

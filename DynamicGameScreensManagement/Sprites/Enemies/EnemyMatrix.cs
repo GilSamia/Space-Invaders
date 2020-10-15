@@ -11,7 +11,11 @@ namespace SpaceInvaders.Sprites.Enemies
     public class EnemyMatrix : Sprite
     {
         internal const int k_NumberOfRows = 1;
-        internal const int k_NumberOfCols = 1;
+        private static int s_NumberOfCols;
+        //        internal const int k_NumberOfCols = 1;
+
+        private int m_CurrentLevel;
+
         private const int k_DeadAmountToIncreaseSpeed = 5;
         private int m_NumberOfCurrentDeadEnemies;
 
@@ -24,10 +28,9 @@ namespace SpaceInvaders.Sprites.Enemies
         private const int k_YellowEnemyScore = 70;
 
         private float m_EnemySize;
-        private readonly GameScreen r_Game;
-        private static int s_CurrentLevel;
 
         private readonly GameScreen r_GameScreen;
+        internal Enemy[,] m_EnemyMatrix;
 
         public int NumberOfRows
         {
@@ -36,34 +39,34 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public int NumberOfCols
         {
-            get { return (k_NumberOfCols); }
+            get { return (s_NumberOfCols); }
         }
 
         public int PinkEnemyScore
         {
-            get { return k_PinkEnemyScore + ((s_CurrentLevel % 1) * 100); }
+            get { return k_PinkEnemyScore + (((m_CurrentLevel - 1) % 4)* 100); }
         }
 
         public int BlueEnemyScore
         {
-            get { return k_BlueEnemyScore + ((s_CurrentLevel % 1) * 100); }
+            get { return k_BlueEnemyScore + (((m_CurrentLevel - 1) % 4) * 100); }
         }
 
         public int YellowEnemyScore
         {
-            get { return k_YellowEnemyScore + ((s_CurrentLevel % 1) * 100); }
+            get { return k_YellowEnemyScore + (((m_CurrentLevel - 1) % 4) * 100); }
         }
 
-        public EnemyMatrix(GameScreen i_Game, string i_AssetName, int i_Level)
+        public EnemyMatrix(GameScreen i_Game, string i_AssetName, int m_CurrentLevel, int i_NumberOfCols)
             : base(i_AssetName, i_Game.Game)
         {
-            r_Game = i_Game;
             r_GameScreen = i_Game;
-            s_CurrentLevel = i_Level;
+            s_NumberOfCols = i_NumberOfCols;
+            m_EnemyMatrix = new Enemy[k_NumberOfRows, s_NumberOfCols];
             i_Game.Add(this);
+
         }
 
-        internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols + (1 % s_CurrentLevel)];
 
         internal void KillEnemyAt(Point i_EnemyPoint)
         {
@@ -85,7 +88,7 @@ namespace SpaceInvaders.Sprites.Enemies
             float distance = k_PercentageOfDistanceBetweenEnemies * m_EnemySize;
             for (int i = 0; i < NumberOfRows; i++)
             {
-                for (int j = 0; j < NumberOfCols + (s_CurrentLevel % 1); j++)
+                for (int j = 0; j < NumberOfCols; j++)
                 {
                     position = new Vector2((float)j * distance, i * distance + m_EnemySize * 3);
                     Point point = new Point(i, j);
@@ -112,8 +115,6 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public override void Update(GameTime i_GameTime)
         {
-            s_CurrentLevel = (r_Game as PlayScreen).CurrentLevel;
-
             Enemy.JumpYDelta = 0;
             if (Enemy.JumpXDirection > 0)
             {
