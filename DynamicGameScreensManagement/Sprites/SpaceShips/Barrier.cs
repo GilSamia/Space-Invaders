@@ -199,7 +199,8 @@ namespace SpaceInvaders.Sprites.SpaceShips
         public override void Update(GameTime i_GameTime)
         {
             m_CurrentLevel = (r_Game as PlayScreen).CurrentLevel;
-            Velocity = new Vector2((1 % m_CurrentLevel) * k_BarrierSpeedIncrement * m_BarrierSpeed * m_XDirection, 0);
+            Velocity = new Vector2(((m_CurrentLevel - 1) % 4) * k_BarrierSpeedIncrement * m_BarrierSpeed * m_XDirection, 0);
+
             base.Update(i_GameTime);
 
             if (m_RightBound < Position.X || m_LeftBound > Position.X)

@@ -63,7 +63,7 @@ namespace SpaceInvaders.Sprites.Enemies
             i_Game.Add(this);
         }
 
-        internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols + (s_CurrentLevel % 1)];
+        internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols + (1 % s_CurrentLevel)];
 
         internal void KillEnemyAt(Point i_EnemyPoint)
         {
