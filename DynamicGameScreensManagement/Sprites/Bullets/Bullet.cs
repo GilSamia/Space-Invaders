@@ -55,6 +55,7 @@ namespace SpaceInvaders.Sprites.Bullets
         {
             r_Shooter.ReduceBulletsByOne();
             r_Game.Remove(this);
+            Position = new Vector2(-100, -100);
             this.Dispose();
         }
 

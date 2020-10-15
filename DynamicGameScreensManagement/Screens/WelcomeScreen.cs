@@ -11,6 +11,7 @@ using Infrastructure.Managers;
 using SpaceInvaders.Menus;
 using Microsoft.Xna.Framework.Audio;
 using SpaceInvaders;
+using SpaceInvaders.Screens;
 
 namespace GameScreens.Screens
 {
@@ -44,6 +45,8 @@ namespace GameScreens.Screens
             {
                 r_Game.MenuMoveSound.Play();
                 ExitScreen();
+                ScreensManager.SetCurrentScreen(new PlayScreen(Game)); ;
+                ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
             }
 
             if (InputManager.KeyPressed(Keys.Escape))

@@ -68,6 +68,7 @@ namespace SpaceInvaders.Sprites.ScoreAndLife
         public void OnKill(IShooter i_MyKiller)
         {
             (Game as GameWithScreens).SpriteSoundEffects["LifeDie"].Play();
+            Position = new Vector2(-100, -100);
             //r_Game.Remove(this);
             //m_Animations.Restart();
         }

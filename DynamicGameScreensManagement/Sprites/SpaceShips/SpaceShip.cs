@@ -70,7 +70,7 @@ namespace SpaceInvaders.Sprites
         private void addScoreFont()
         {
             string text = String.Format("P{0} Score: {1}", r_SpaceShipIndex + 1, PlayerInformation.CurrentScore);
-            m_ScoreText = new ScoreText(Game, PlayerInformation);
+            m_ScoreText = new ScoreText(r_Game, PlayerInformation);
         }
 
         private void addDistroyedAnimation()

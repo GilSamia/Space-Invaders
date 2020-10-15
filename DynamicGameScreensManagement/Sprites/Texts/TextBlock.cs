@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,11 +10,12 @@ namespace SpaceInvaders.Sprites
 {
     internal class TextBlock : Sprite
     {
+        private GameScreen r_Game;
+
         protected SpriteFont m_Font;
         private Color m_FontColor = Color.White;
         private readonly string r_AssetFontName;
-        private const string k_AssetTextureName =
-            @"Sprites/Ship01_32x32"; // #TODO: Change the assert name to TransparentBG_1x1
+        private const string k_AssetTextureName = @"Sprites/TransparentBG_1x1";
 
         public string Text { get; set; }
         protected Color FontColor
@@ -22,10 +24,12 @@ namespace SpaceInvaders.Sprites
             set { m_FontColor = value; }
         }
 
-        public TextBlock(string i_AssetFontName, Game i_Game, string i_Text) : base(k_AssetTextureName, i_Game)
+        public TextBlock(string i_AssetFontName, GameScreen i_Game, string i_Text) : base(k_AssetTextureName, i_Game.Game)
         {
             r_AssetFontName = i_AssetFontName;
             Text = i_Text;
+            r_Game = i_Game;
+            r_Game.Add(this);
         }
         public TextBlock(string i_AssetFontName, string i_AssetTextureName, Game i_Game, string i_Text) : base(i_AssetTextureName, i_Game)
         {
@@ -39,10 +43,9 @@ namespace SpaceInvaders.Sprites
             base.LoadContent();
         }
 
-        protected void drawFunction() // TODO: Fix this
+        protected override void drawFunction()
         {
             m_SpriteBatch.DrawString(m_Font, Text, Position, FontColor, Rotation, RotationOrigin, Scales, SpriteEffects.None, LayerDepth);
         }
-
     }
 }

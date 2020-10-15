@@ -402,10 +402,7 @@ namespace Infrastructure.ObjectModel
                     DepthStencilState, RasterizerState, Shader, TransformMatrix);
             }
 
-            m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
-                 this.SourceRectangle, this.TintColor,
-                this.Rotation, this.RotationOrigin, this.Scales,
-                SpriteEffects.None, this.LayerDepth);
+            drawFunction();
 
             if (!m_UseSharedBatch)
             {
@@ -418,6 +415,14 @@ namespace Infrastructure.ObjectModel
             }
 
             base.Draw(gameTime);
+        }
+
+        protected virtual void drawFunction()
+        {
+            m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
+                 this.SourceRectangle, this.TintColor,
+                this.Rotation, this.RotationOrigin, this.Scales,
+                SpriteEffects.None, this.LayerDepth);
         }
 
         #region Collision Handlers

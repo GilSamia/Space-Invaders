@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Utils;
 using System;
@@ -11,7 +12,8 @@ namespace SpaceInvaders.Sprites.Texts
     {
         private readonly PlayerInformation r_PlayerInfo;
         private const string k_ConsolasFont = @"Fonts/Consolas";
-        public ScoreText(Game i_Game, PlayerInformation i_PlayerInfo) : base(k_ConsolasFont, i_Game, String.Empty)
+
+        public ScoreText(GameScreen i_Game, PlayerInformation i_PlayerInfo) : base(k_ConsolasFont, i_Game, String.Empty)
         {
             r_PlayerInfo = i_PlayerInfo;
         }

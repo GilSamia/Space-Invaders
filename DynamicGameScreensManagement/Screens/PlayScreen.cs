@@ -24,12 +24,13 @@ namespace GameScreens.Screens
         private MotherShip m_MotherShip;
         private Barriers m_Barriers;
         private bool m_IsInit = false;
+        private bool m_FirstGamingRound = true;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
 
         private bool m_IsGameOver = false;
 
-        GameInstructionsScreen m_GameInstructionsScreen;
-        PauseScreen m_PauseScreen;
+        private GameInstructionsScreen m_GameInstructionsScreen;
+        private PauseScreen m_PauseScreen;
 
         SpriteFont m_FontCalibri;
 
@@ -55,7 +56,7 @@ namespace GameScreens.Screens
         {
             if (!m_IsInit)
             {
-                addManagers();
+                //addManagers();
                 addBackground();
                 addSpaceShips();
                 addMotherShip();
@@ -82,8 +83,12 @@ namespace GameScreens.Screens
 
         private void addManagers()
         {
-            //new InputManager(r_Game);
-            new CollisionsManager(r_Game);
+            if (m_FirstGamingRound)
+            {
+                //new InputManager(r_Game);
+                new CollisionsManager(r_Game);
+                m_FirstGamingRound = false;
+            }
         }
 
         private void addBackground()
@@ -112,7 +117,9 @@ namespace GameScreens.Screens
 
         public void OnGameOver()
         {
-            this.ExitScreen();
+            r_Game.Components.Remove(this);
+            ExitScreen();
+            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, "", 1));
         }
 
         protected override void LoadContent()

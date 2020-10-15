@@ -6,6 +6,8 @@ using GameScreens.Sprites;
 using Infrastructure.ObjectModel.Screens;
 using System;
 using Microsoft.Xna.Framework.Audio;
+using GameScreens.Screens;
+using SpaceInvaders.Screens;
 
 namespace SpaceInvaders.Menus
 {
@@ -133,6 +135,8 @@ namespace SpaceInvaders.Menus
                     //Play Game
                     case 3:
                         ExitScreen();
+                        ScreensManager.SetCurrentScreen(new PlayScreen(Game)); ;
+                        ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
                         break;
 
                     //Quit Game (Exit)

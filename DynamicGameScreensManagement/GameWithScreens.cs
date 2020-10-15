@@ -43,7 +43,7 @@ namespace SpaceInvaders
 
             r_SpriteSoundEffects = new Dictionary<string, SoundEffectInstance>();
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
-
+            new CollisionsManager(this);
             this.Content.RootDirectory = "Content";
             m_inputManager = new InputManager(this);
 
@@ -79,25 +79,11 @@ namespace SpaceInvaders
 
         private void setScreenStack(ScreensMananger i_ScreensManager)
         {
-            i_ScreensManager.Push(new GameOverScreen(this));
-            i_ScreensManager.Push(new PlayScreen(this));
-            i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
+            //i_ScreensManager.Push(new GameOverScreen(this));
+            //i_ScreensManager.Push(new PlayScreen(this));
+            //i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
+            i_ScreensManager.Push(new DummyGameScreen(this));
             i_ScreensManager.SetCurrentScreen(new WelcomeScreen(this));
-        }
-
-        public void setScreenStackOnGameOver(ScreensMananger i_ScreensManager)
-        {
-            i_ScreensManager.Push(new GameOverScreen(this));
-            i_ScreensManager.Push(new PlayScreen(this));
-            i_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this, 1));
-        }
-        
-        public void setMainMenuStackOnGameOver(ScreensMananger i_ScreensManager)
-        {
-            i_ScreensManager.Push(new GameOverScreen(this));
-            i_ScreensManager.Push(new PlayScreen(this));
-            i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
-            i_ScreensManager.SetCurrentScreen(new MainMenu(this));
         }
 
         protected override void Initialize()
