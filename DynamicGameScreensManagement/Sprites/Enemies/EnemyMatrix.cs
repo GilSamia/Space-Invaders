@@ -57,11 +57,12 @@ namespace SpaceInvaders.Sprites.Enemies
             get { return k_YellowEnemyScore + (((m_CurrentLevel - 1) % 4) * 100); }
         }
 
-        public EnemyMatrix(GameScreen i_Game, string i_AssetName, int m_CurrentLevel, int i_NumberOfCols)
+        public EnemyMatrix(GameScreen i_Game, string i_AssetName, int i_CurrentLevel, int i_NumberOfCols)
             : base(i_AssetName, i_Game.Game)
         {
             r_GameScreen = i_Game;
             s_NumberOfCols = i_NumberOfCols;
+            m_CurrentLevel = i_CurrentLevel;
             m_EnemyMatrix = new Enemy[k_NumberOfRows, s_NumberOfCols];
             i_Game.Add(this);
 
