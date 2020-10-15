@@ -1,4 +1,5 @@
-﻿using Infrastructure.ObjectModel;
+﻿using GameScreens.Screens;
+using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
@@ -104,7 +105,9 @@ namespace SpaceInvaders.Sprites
         {
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
-            //(r_Game.Game as PlayScreen).OnGameOver;
+            r_Game.Remove(this);
+            this.Dispose();
+            (r_Game as PlayScreen).OnGameOver("Scores are this and that", 1);
         }
 
         public override void Initialize()
@@ -171,9 +174,9 @@ namespace SpaceInvaders.Sprites
         {
             if (canShoot())
             {
-                (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
                 Bullet bullet = new SpaceShipBullet(r_Game, this);
                 m_BulletsCounter++;
+                (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
             }
         }
 

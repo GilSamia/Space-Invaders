@@ -33,6 +33,7 @@ namespace SpaceInvaders.Utils
                 return m_CurrentLife;
             }
         }
+
         internal int PlayerIndex
         {
             get
@@ -40,6 +41,7 @@ namespace SpaceInvaders.Utils
                 return r_PlayerIndex;
             }
         }
+
         internal int MaxLife
         {
             get

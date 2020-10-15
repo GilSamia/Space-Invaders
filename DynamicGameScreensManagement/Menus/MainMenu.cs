@@ -135,7 +135,7 @@ namespace SpaceInvaders.Menus
                     //Play Game
                     case 3:
                         ExitScreen();
-                        ScreensManager.SetCurrentScreen(new PlayScreen(Game)); ;
+                        ScreensManager.SetCurrentScreen(new PlayScreen(Game, 1)); ;
                         ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
                         break;
 

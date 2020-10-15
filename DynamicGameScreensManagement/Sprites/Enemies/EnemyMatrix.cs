@@ -24,6 +24,8 @@ namespace SpaceInvaders.Sprites.Enemies
 
         private float m_EnemySize;
 
+        private int m_CurrentLevel;
+
         private readonly GameScreen r_GameScreen;
 
         internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols];
@@ -38,10 +40,11 @@ namespace SpaceInvaders.Sprites.Enemies
             get { return k_NumberOfCols; }
         }
 
-        public EnemyMatrix(GameScreen i_Game, string i_AssetName)
+        public EnemyMatrix(GameScreen i_Game, string i_AssetName, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
             r_GameScreen = i_Game;
+            m_CurrentLevel = i_Level;
             i_Game.Add(this);
         }
         internal void KillEnemyAt(Point i_EnemyPoint)

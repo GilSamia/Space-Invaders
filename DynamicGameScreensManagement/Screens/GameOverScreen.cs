@@ -45,7 +45,7 @@ namespace GameScreens.Screens
             {
                 ExitScreen();
                 ScreensManager.SetCurrentScreen(new DummyGameScreen(Game)); ;
-                ScreensManager.SetCurrentScreen(new PlayScreen(Game)); ;
+                ScreensManager.SetCurrentScreen(new PlayScreen(Game, 1)); ;
                 ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
                 //r_Game.Components.Remove(this);
                 //(r_Game as GameWithScreens).setScreenStackOnGameOver((r_Game as GameWithScreens).ScreensManager);

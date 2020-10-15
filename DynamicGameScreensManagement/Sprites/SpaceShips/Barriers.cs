@@ -14,11 +14,14 @@ namespace SpaceInvaders.Sprites.SpaceShips
         private const int k_TextureSize = 44;
         private const float k_DistancePrecentage = 1.3f;
 
-        public Barriers(GameScreen i_Game, string i_AssetName)
+        private int m_CurrentLevel;
+
+        public Barriers(GameScreen i_Game, string i_AssetName, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
             r_Game = i_Game;
             r_Barriers = new List<Barrier>();
+            m_CurrentLevel = i_Level;
             i_Game.Add(this);
         }
 
@@ -37,7 +40,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
                 Texture.GetData<Color>(pixels);
                 Color[] clonePixels = pixels.Clone() as Color[];
 
-                r_Barriers.Add(new Barrier(r_Game, AssetName + i, position, clonePixels));
+                r_Barriers.Add(new Barrier(r_Game, AssetName + i, position, clonePixels, m_CurrentLevel));
                 currentX += (Texture.Width + Texture.Width * k_DistancePrecentage);
             }
         }

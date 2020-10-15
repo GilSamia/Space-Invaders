@@ -45,7 +45,7 @@ namespace GameScreens.Screens
             {
                 r_Game.MenuMoveSound.Play();
                 ExitScreen();
-                ScreensManager.SetCurrentScreen(new PlayScreen(Game)); ;
+                ScreensManager.SetCurrentScreen(new PlayScreen(Game, 1)); ;
                 ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
             }
 

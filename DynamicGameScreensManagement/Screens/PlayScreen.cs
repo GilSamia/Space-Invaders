@@ -26,6 +26,9 @@ namespace GameScreens.Screens
         private bool m_IsInit = false;
         private bool m_FirstGamingRound = true;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
+        private int m_Player1Score;
+        private int m_Player2Score;
+        private int m_currentLevel;
 
         private bool m_IsGameOver = false;
 
@@ -38,12 +41,13 @@ namespace GameScreens.Screens
         private Vector2 m_BackgroundPosition;
         private readonly Color r_BackgroundTint = Color.White;
 
-        public PlayScreen(Game i_Game)
+        public PlayScreen(Game i_Game, int i_Level)
             : base(i_Game)
         {
             m_GameInstructionsScreen = new GameInstructionsScreen(i_Game);
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
+            m_currentLevel = i_Level;
         }
 
         public override void Initialize()
@@ -68,27 +72,17 @@ namespace GameScreens.Screens
 
         public void addBarriers()
         {
-            m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32");
+            m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32", m_currentLevel);
         }
 
         public void addEnemyMatrix()
         {
-            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32");
+            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32", m_currentLevel);
         }
 
         private void addMotherShip()
         {
             m_MotherShip = new MotherShip(this);
-        }
-
-        private void addManagers()
-        {
-            if (m_FirstGamingRound)
-            {
-                //new InputManager(r_Game);
-                new CollisionsManager(r_Game);
-                m_FirstGamingRound = false;
-            }
         }
 
         private void addBackground()
@@ -115,11 +109,12 @@ namespace GameScreens.Screens
             }
         }
 
-        public void OnGameOver()
+        public void OnGameOver(string i_Scores, int i_WinningPlayerIndex)
         {
             r_Game.Components.Remove(this);
+            Game.Components.Remove(this);
             ExitScreen();
-            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, "", 1));
+            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, i_Scores, i_WinningPlayerIndex));
         }
 
         protected override void LoadContent()

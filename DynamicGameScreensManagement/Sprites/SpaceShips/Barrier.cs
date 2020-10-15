@@ -13,9 +13,11 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
     public class Barrier : Sprite, ICollidable2D
     {
-        private const float k_BarrierSpeed = 35f;
+        private const float k_BarrierSpeedIncrement = 1.6f;
         private const float k_BoundDistance = 0.5f;
         private const float k_BulletDamage = 0.35f;
+
+        private float m_BarrierSpeed = 35f;
         private readonly Vector2 r_StartPosition;
         private readonly ICollisionsManager r_CollisionsManager;
 
@@ -24,14 +26,17 @@ namespace SpaceInvaders.Sprites.SpaceShips
         private float m_LeftBound;
         private Color[] m_Pixels;
 
+        private int m_CurrentLevel;
+
         public event EventHandler<EventArgs> Disposed;
 
-        public Barrier(GameScreen i_Game, string i_AssetName, Vector2 i_Position, Color[] i_Pixels)
+        public Barrier(GameScreen i_Game, string i_AssetName, Vector2 i_Position, Color[] i_Pixels, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
             m_Pixels = i_Pixels;
             r_StartPosition = i_Position;
             r_CollisionsManager = Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
+            m_CurrentLevel = i_Level;
             i_Game.Add(this);
         }
 
@@ -189,7 +194,21 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         public override void Update(GameTime i_GameTime)
         {
-            Velocity = new Vector2(k_BarrierSpeed * m_XDirection, 0);
+            if ((m_CurrentLevel % 1) != 0)
+            {
+                if ((m_CurrentLevel % 1) == 1)
+                {
+                    Velocity = new Vector2(m_BarrierSpeed * m_XDirection, 0);
+                }
+                if ((m_CurrentLevel % 1) == 2)
+                {
+                    Velocity = new Vector2(m_BarrierSpeed * k_BarrierSpeedIncrement * m_XDirection, 0);
+                }
+                if ((m_CurrentLevel % 1) == 1)
+                {
+                    Velocity = new Vector2(m_BarrierSpeed * k_BarrierSpeedIncrement * 2 * m_XDirection, 0);
+                }
+            }
 
             base.Update(i_GameTime);
 
