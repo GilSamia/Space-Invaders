@@ -1,6 +1,7 @@
 ﻿using GameScreens.Sprites;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace SpaceInvaders.Screens
 {
@@ -14,6 +15,13 @@ namespace SpaceInvaders.Screens
             r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 100);
             this.Add(m_Background);
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         public override void Initialize()

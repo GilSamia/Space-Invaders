@@ -1,5 +1,4 @@
 ﻿using Infrastructure.ObjectModel.Screens;
-using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Sprites.ScoreAndLife
 {

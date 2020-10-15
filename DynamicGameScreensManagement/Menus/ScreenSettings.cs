@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using GameScreens.Sprites;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Audio;
+using System;
 
 namespace SpaceInvaders.Menus
 {
@@ -32,6 +33,14 @@ namespace SpaceInvaders.Menus
             r_MenuItemList = new List<string>();
 
             initMenuItems();
+
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         private void initMenuItems()
@@ -145,7 +154,6 @@ namespace SpaceInvaders.Menus
                         break;
                 }
             }
-
         }
 
         private void toggleMouseVisability()

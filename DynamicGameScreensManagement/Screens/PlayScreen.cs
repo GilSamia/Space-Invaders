@@ -19,7 +19,7 @@ namespace GameScreens.Screens
 {
     public class PlayScreen : GameScreen
     {
-        internal const int k_NumberOfCols = 1;
+        internal const int k_NumberOfCols = 9;
         private const float k_BarrierSpeedIncrement = 1.6f;
 
         private int m_CurrentLevel;
@@ -34,7 +34,6 @@ namespace GameScreens.Screens
         private bool m_IsInit = false;
         private bool m_FirstGamingRound = true;
 
-        private GameInstructionsScreen m_GameInstructionsScreen;
         private PauseScreen m_PauseScreen;
 
         SpriteFont m_FontCalibri;
@@ -46,10 +45,10 @@ namespace GameScreens.Screens
         public PlayScreen(Game i_Game, int i_Level)
             : base(i_Game)
         {
-            m_GameInstructionsScreen = new GameInstructionsScreen(i_Game);
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
             m_CurrentLevel = i_Level;
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
         public int CurrentLevel
@@ -61,6 +60,7 @@ namespace GameScreens.Screens
         {
             initializeGameComponents();
             base.Initialize();
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale, Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         private void initializeGameComponents()
@@ -94,6 +94,7 @@ namespace GameScreens.Screens
 
         private void addBackground()
         {
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
             m_Background = new Background(this, @"Sprites/BG_Space01_1024x768", 1);
             this.Add(m_Background);
         }
@@ -118,11 +119,20 @@ namespace GameScreens.Screens
 
         public void OnGameOver()
         {
+            string massage = buildMessage();
+            this.r_SpaceShips[0].RemoveScoreTextContent();
+            this.r_SpaceShips.Remove(r_SpaceShips[0]);
+            if (!(Game as GameWithScreens).SinglePlayerGame)
+            {
+                this.r_SpaceShips.Remove(r_SpaceShips[1]);
+                this.r_SpaceShips[1].RemoveScoreTextContent();
+                this.r_SpaceShips.Remove(r_SpaceShips[1]);
+            }
             r_Game.Components.Remove(this);
             Game.Components.Remove(this);
             ExitScreen();
 
-            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, buildMessage()));
+            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, massage));
         }
 
         private string buildMessage()
@@ -161,11 +171,6 @@ namespace GameScreens.Screens
         {
             base.Update(gameTime);
 
-            if (InputManager.KeyPressed(Keys.I))
-            {
-                ScreensManager.SetCurrentScreen(m_GameInstructionsScreen);
-            }
-
             if (InputManager.KeyPressed(Keys.P))
             {
                 m_ScreensManager.SetCurrentScreen(new PauseScreen(this.Game));
@@ -183,6 +188,12 @@ namespace GameScreens.Screens
             (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, m_CurrentLevel));
             base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, m_CurrentLevel));
             ExitScreen();
+        }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         public override void Draw(GameTime i_GameTime)

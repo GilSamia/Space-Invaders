@@ -21,11 +21,19 @@ namespace SpaceInvaders.Screens
             m_SecondsShow = TimeSpan.FromSeconds(2.5);
 
             this.Add(m_Background);
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         public override void Initialize()
         {
             base.Initialize();
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale, Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         public override void Update(GameTime i_GameTime)

@@ -31,6 +31,13 @@ namespace SpaceInvaders.Menus
             m_CurrentMenuItemIndex = 0;
             m_MenuOperations = new MenuOperations(r_Game);
             initializeMenuItems();
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         private void initializeMenuItems()

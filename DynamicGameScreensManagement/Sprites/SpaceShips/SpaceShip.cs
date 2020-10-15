@@ -60,6 +60,8 @@ namespace SpaceInvaders.Sprites
 
         public PlayerInformation PlayerInformation { get; }
 
+        public ScoreText ScoreText { get; set; }
+
         public Vector2 ShooterPosition => Position;
 
         public float ShooterWidth => Width;
@@ -108,12 +110,17 @@ namespace SpaceInvaders.Sprites
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
 
-            m_ScoreText.removeContent();
+            //m_ScoreText.removeContent();
             //TODO:Remove the text...
 
             r_Game.Remove(this);
             this.Dispose();
             (r_Game as PlayScreen).OnGameOver();
+        }
+
+        public void RemoveScoreTextContent()
+        {
+            m_ScoreText.removeContent();
         }
 
         public override void Initialize()

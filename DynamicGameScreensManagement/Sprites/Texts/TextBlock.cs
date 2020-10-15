@@ -31,6 +31,7 @@ namespace SpaceInvaders.Sprites
             r_Game = i_Game;
             r_Game.Add(this);
         }
+
         public TextBlock(string i_AssetFontName, string i_AssetTextureName, Game i_Game, string i_Text) : base(i_AssetTextureName, i_Game)
         {
             r_AssetFontName = i_AssetFontName;
@@ -51,7 +52,6 @@ namespace SpaceInvaders.Sprites
         public void removeContent()
         {
             r_Game.Remove(this);
-
         }
     }
 }

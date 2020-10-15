@@ -21,6 +21,7 @@ namespace GameScreens.Screens
         {
             r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 30);
+            m_Background.TintColor = Color.Red;
             this.Add(m_Background);
 
             m_ScoresMessage = i_ScoresMessage;

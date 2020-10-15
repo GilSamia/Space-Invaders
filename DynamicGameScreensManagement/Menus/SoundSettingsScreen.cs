@@ -69,7 +69,6 @@ namespace SpaceInvaders.Menus
             base.Update(gameTime);
             updateCircularMenuPosition();
             updateUserChoise();
-            UpdateSettings();
             if (InputManager.KeyPressed(Keys.M))
             {
                 r_Game.MuteSound();
@@ -167,20 +166,15 @@ namespace SpaceInvaders.Menus
 
                 //Done
                 case 3:
-                    //                    ExitScreen();
                     break;
             }
         }
 
         private void toggleSound()
         {
+            r_Game.MuteSound();
             m_SoundOn = !m_SoundOn;
             r_MenuItemList[0] = string.Format("Toggle Sound: {0}", boolToString(m_SoundOn));
-        }
-
-        private void UpdateSettings()
-        {
-            //TODO: Update actual sound settings....
         }
 
         public override void Draw(GameTime gameTime)

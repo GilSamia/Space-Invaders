@@ -37,8 +37,8 @@ namespace SpaceInvaders
         {
             m_GraphicsManager = new GraphicsDeviceManager(this);
 
-            m_GraphicsManager.PreferredBackBufferWidth = 1500;
-            m_GraphicsManager.PreferredBackBufferHeight = 1500;
+            m_GraphicsManager.PreferredBackBufferWidth = 1000;
+            m_GraphicsManager.PreferredBackBufferHeight = 1000;
             m_GraphicsManager.ApplyChanges();
 
             r_SpriteSoundEffects = new Dictionary<string, SoundEffectInstance>();
