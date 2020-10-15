@@ -194,21 +194,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         public override void Update(GameTime i_GameTime)
         {
-            if ((m_CurrentLevel % 1) != 0)
-            {
-                if ((m_CurrentLevel % 1) == 1)
-                {
-                    Velocity = new Vector2(m_BarrierSpeed * m_XDirection, 0);
-                }
-                if ((m_CurrentLevel % 1) == 2)
-                {
-                    Velocity = new Vector2(m_BarrierSpeed * k_BarrierSpeedIncrement * m_XDirection, 0);
-                }
-                if ((m_CurrentLevel % 1) == 1)
-                {
-                    Velocity = new Vector2(m_BarrierSpeed * k_BarrierSpeedIncrement * 2 * m_XDirection, 0);
-                }
-            }
+            Velocity = new Vector2(m_BarrierSpeed * (m_CurrentLevel % 1) * k_BarrierSpeedIncrement * m_XDirection, 0);
 
             base.Update(i_GameTime);
 
