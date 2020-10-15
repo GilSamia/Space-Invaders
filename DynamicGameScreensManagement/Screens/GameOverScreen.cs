@@ -14,18 +14,16 @@ namespace GameScreens.Screens
     {
         private Game r_Game;
         private Background m_Background;
-        private string m_Scores;
-        private int m_WinningPlayerIndex;
+        private string m_ScoresMessage;
 
-        public GameOverScreen(Game i_Game, string i_Scores, int i_WinningPlayerIndex)
+        public GameOverScreen(Game i_Game, string i_ScoresMessage)
             : base(i_Game)
         {
             r_Game = i_Game;
             m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 30);
             this.Add(m_Background);
 
-            m_Scores = i_Scores;
-            m_WinningPlayerIndex = i_WinningPlayerIndex;
+            m_ScoresMessage = i_ScoresMessage;
         }
 
         public override void Initialize()
@@ -76,8 +74,8 @@ namespace GameScreens.Screens
         private void displayGameOverMessage()
         {
             SpriteFont consolasFont = ContentManager.Load<SpriteFont>(@"Fonts\Consolas");
-            string message = string.Format("Game Over!{0}{0} You're Scores Are{0}{1}{0}{0}ESC  - To Exit{0}HOME  - Start a new game{0}M  - Main Menu", System.Environment.NewLine, m_Scores);
-            Vector2 position = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            string message = string.Format("Game Over!{0}{0}{1}{0}{0}ESC  - To Exit{0}HOME  - Start a new game{0}M  - Main Menu", System.Environment.NewLine, m_ScoresMessage);
+            Vector2 position = new Vector2(GraphicsDevice.Viewport.Width / 2 - 200, GraphicsDevice.Viewport.Height / 2 - 200);
             SpriteBatch.DrawString(consolasFont, message, position, Color.White);
         }
     }

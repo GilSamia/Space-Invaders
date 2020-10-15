@@ -1,4 +1,5 @@
-﻿using Infrastructure.ObjectModel;
+﻿using GameScreens.Screens;
+using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,8 +10,8 @@ namespace SpaceInvaders.Sprites.Enemies
 {
     public class EnemyMatrix : Sprite
     {
-        internal const int k_NumberOfRows = 5;
-        internal const int k_NumberOfCols = 9;
+        internal const int k_NumberOfRows = 1;
+        internal const int k_NumberOfCols = 1;
         private const int k_DeadAmountToIncreaseSpeed = 5;
         private int m_NumberOfCurrentDeadEnemies;
 
@@ -23,7 +24,7 @@ namespace SpaceInvaders.Sprites.Enemies
         private const int k_YellowEnemyScore = 70;
 
         private float m_EnemySize;
-
+        private readonly GameScreen r_Game;
         private static int s_CurrentLevel;
 
         private readonly GameScreen r_GameScreen;
@@ -35,19 +36,34 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public int NumberOfCols
         {
-            get { return k_NumberOfCols + (s_CurrentLevel % 1); }
+            get { return (k_NumberOfCols); }
+        }
+
+        public int PinkEnemyScore
+        {
+            get { return k_PinkEnemyScore + ((s_CurrentLevel % 1) * 100); }
+        }
+
+        public int BlueEnemyScore
+        {
+            get { return k_BlueEnemyScore + ((s_CurrentLevel % 1) * 100); }
+        }
+
+        public int YellowEnemyScore
+        {
+            get { return k_YellowEnemyScore + ((s_CurrentLevel % 1) * 100); }
         }
 
         public EnemyMatrix(GameScreen i_Game, string i_AssetName, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             r_GameScreen = i_Game;
             s_CurrentLevel = i_Level;
             i_Game.Add(this);
         }
 
         internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols + (s_CurrentLevel % 1)];
-
 
         internal void KillEnemyAt(Point i_EnemyPoint)
         {
@@ -69,23 +85,23 @@ namespace SpaceInvaders.Sprites.Enemies
             float distance = k_PercentageOfDistanceBetweenEnemies * m_EnemySize;
             for (int i = 0; i < NumberOfRows; i++)
             {
-                for (int j = 0; j < NumberOfCols; j++)
+                for (int j = 0; j < NumberOfCols + (s_CurrentLevel % 1); j++)
                 {
                     position = new Vector2((float)j * distance, i * distance + m_EnemySize * 3);
                     Point point = new Point(i, j);
 
                     if (i == 0)
                     {
-                        currentEnemyData = new EnemyData(Color.Pink, k_PinkEnemyScore, 
+                        currentEnemyData = new EnemyData(Color.Pink, PinkEnemyScore, 
                             @"Sprites/AllEnemies_192x32", position, 0, point);
                     }
                     else if (i > 0 && i < 3)
                     {
-                        currentEnemyData = new EnemyData(Color.LightBlue, k_BlueEnemyScore, @"Sprites/AllEnemies_192x32", position, 2, point);
+                        currentEnemyData = new EnemyData(Color.LightBlue, BlueEnemyScore, @"Sprites/AllEnemies_192x32", position, 2, point);
                     }
                     else
                     {
-                        currentEnemyData = new EnemyData(Color.LightYellow, k_YellowEnemyScore, @"Sprites/AllEnemies_192x32", position, 4, point);
+                        currentEnemyData = new EnemyData(Color.LightYellow, YellowEnemyScore, @"Sprites/AllEnemies_192x32", position, 4, point);
                     }
 
                     Enemy enemy = new Enemy(r_GameScreen, currentEnemyData, this);
@@ -96,6 +112,8 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public override void Update(GameTime i_GameTime)
         {
+            s_CurrentLevel = (r_Game as PlayScreen).CurrentLevel;
+
             Enemy.JumpYDelta = 0;
             if (Enemy.JumpXDirection > 0)
             {
@@ -206,7 +224,7 @@ namespace SpaceInvaders.Sprites.Enemies
                     return;
                 }
             }
-
+            (r_GameScreen as PlayScreen).moveLevel();
              //(r_Game as PlayScreen).OnGameOver();
 
         }

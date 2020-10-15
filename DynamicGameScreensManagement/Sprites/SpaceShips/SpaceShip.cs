@@ -105,9 +105,12 @@ namespace SpaceInvaders.Sprites
         {
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
+            
+            int score = this.PlayerInformation.CurrentScore;
+            (r_Game as PlayScreen).OnGameOver("Scores are this and that", 1);
+
             r_Game.Remove(this);
             this.Dispose();
-            (r_Game as PlayScreen).OnGameOver("Scores are this and that", 1);
         }
 
         public override void Initialize()

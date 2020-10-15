@@ -1,4 +1,5 @@
-﻿using Infrastructure.ObjectModel;
+﻿using GameScreens.Screens;
+using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
@@ -26,6 +27,8 @@ namespace SpaceInvaders.Sprites.SpaceShips
         private float m_LeftBound;
         private Color[] m_Pixels;
 
+        private readonly GameScreen r_Game;
+
         private int m_CurrentLevel;
 
         public event EventHandler<EventArgs> Disposed;
@@ -33,6 +36,7 @@ namespace SpaceInvaders.Sprites.SpaceShips
         public Barrier(GameScreen i_Game, string i_AssetName, Vector2 i_Position, Color[] i_Pixels, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
+            r_Game = i_Game;
             m_Pixels = i_Pixels;
             r_StartPosition = i_Position;
             r_CollisionsManager = Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
@@ -194,8 +198,11 @@ namespace SpaceInvaders.Sprites.SpaceShips
 
         public override void Update(GameTime i_GameTime)
         {
-            Velocity = new Vector2(m_BarrierSpeed * (m_CurrentLevel % 1) * k_BarrierSpeedIncrement * m_XDirection, 0);
-
+            m_CurrentLevel = (r_Game as PlayScreen).CurrentLevel;
+            if ((m_CurrentLevel % 1) != 0)
+            {
+                Velocity = new Vector2(m_BarrierSpeed * m_XDirection, 0);
+            }
             base.Update(i_GameTime);
 
             if (m_RightBound < Position.X || m_LeftBound > Position.X)

@@ -11,6 +11,7 @@ using SpaceInvaders.Sprites;
 using SpaceInvaders.Sprites.Enemies;
 using SpaceInvaders.Sprites.SpaceShips;
 using SpaceInvaders.Utils;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -26,9 +27,10 @@ namespace GameScreens.Screens
         private bool m_IsInit = false;
         private bool m_FirstGamingRound = true;
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
+
         private int m_Player1Score;
         private int m_Player2Score;
-        private int m_currentLevel;
+        private int m_CurrentLevel;
 
         private bool m_IsGameOver = false;
 
@@ -47,8 +49,14 @@ namespace GameScreens.Screens
             m_GameInstructionsScreen = new GameInstructionsScreen(i_Game);
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
-            m_currentLevel = i_Level;
+            m_CurrentLevel = i_Level;
         }
+
+        public int CurrentLevel
+        {
+            get { return m_CurrentLevel; }
+        }
+
 
         public override void Initialize()
         {
@@ -72,12 +80,12 @@ namespace GameScreens.Screens
 
         public void addBarriers()
         {
-            m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32", m_currentLevel);
+            m_Barriers = new Barriers(this, @"Sprites/Barrier_44x32", m_CurrentLevel);
         }
 
         public void addEnemyMatrix()
         {
-            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32", m_currentLevel);
+            m_EnemyMatrix = new EnemyMatrix(this, @"Sprites/AllEnemies_192x32", m_CurrentLevel);
         }
 
         private void addMotherShip()
@@ -114,7 +122,35 @@ namespace GameScreens.Screens
             r_Game.Components.Remove(this);
             Game.Components.Remove(this);
             ExitScreen();
-            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, i_Scores, i_WinningPlayerIndex));
+
+
+
+            ScreensManager.SetCurrentScreen(new GameOverScreen(Game, buildMessage()));
+        }
+
+        private string buildMessage()
+        {
+            string playersInformationScore = string.Empty;
+            int scoreOfWinningPlayer = 0;
+            SpaceShip winningSpaceShip = null;
+
+            foreach (SpaceShip spaceShip in r_SpaceShips)
+            {
+                if (scoreOfWinningPlayer <= spaceShip.PlayerInformation.CurrentScore)
+                {
+                    winningSpaceShip = spaceShip;
+                    scoreOfWinningPlayer = spaceShip.PlayerInformation.CurrentScore;
+                }
+
+                playersInformationScore += string.Format("Player {0}, Your Score is: {1}{2}", spaceShip.PlayerInformation.PlayerIndex + 1,
+                    spaceShip.PlayerInformation.CurrentScore, Environment.NewLine);
+            }
+
+            string winningMessage = string.Format("Player {0} you won!{1}{1}", winningSpaceShip.PlayerInformation.PlayerIndex + 1,
+                Environment.NewLine);
+            winningMessage += playersInformationScore;
+
+            return winningMessage;
         }
 
         protected override void LoadContent()
@@ -141,6 +177,15 @@ namespace GameScreens.Screens
             {
                 (Game as GameWithScreens).MuteSound();
             }
+        }
+
+        public void moveLevel()
+        {
+            m_CurrentLevel++;
+            (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
+            (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, m_CurrentLevel));
+            base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, m_CurrentLevel));
+            ExitScreen();
         }
 
         public override void Draw(GameTime i_GameTime)
