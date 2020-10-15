@@ -24,11 +24,9 @@ namespace SpaceInvaders.Sprites.Enemies
 
         private float m_EnemySize;
 
-        private int m_CurrentLevel;
+        private static int s_CurrentLevel;
 
         private readonly GameScreen r_GameScreen;
-
-        internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols];
 
         public int NumberOfRows
         {
@@ -37,16 +35,20 @@ namespace SpaceInvaders.Sprites.Enemies
 
         public int NumberOfCols
         {
-            get { return k_NumberOfCols; }
+            get { return k_NumberOfCols + (s_CurrentLevel % 1); }
         }
 
         public EnemyMatrix(GameScreen i_Game, string i_AssetName, int i_Level)
             : base(i_AssetName, i_Game.Game)
         {
             r_GameScreen = i_Game;
-            m_CurrentLevel = i_Level;
+            s_CurrentLevel = i_Level;
             i_Game.Add(this);
         }
+
+        internal Enemy[,] m_EnemyMatrix = new Enemy[k_NumberOfRows, k_NumberOfCols + (s_CurrentLevel % 1)];
+
+
         internal void KillEnemyAt(Point i_EnemyPoint)
         {
             m_EnemyMatrix[i_EnemyPoint.X, i_EnemyPoint.Y] = null;
@@ -65,9 +67,9 @@ namespace SpaceInvaders.Sprites.Enemies
             Vector2 position;
             m_EnemySize = Texture.Height;
             float distance = k_PercentageOfDistanceBetweenEnemies * m_EnemySize;
-            for (int i = 0; i < k_NumberOfRows; i++)
+            for (int i = 0; i < NumberOfRows; i++)
             {
-                for (int j = 0; j < k_NumberOfCols; j++)
+                for (int j = 0; j < NumberOfCols; j++)
                 {
                     position = new Vector2((float)j * distance, i * distance + m_EnemySize * 3);
                     Point point = new Point(i, j);
@@ -117,9 +119,9 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             Vector2 rightestEnemyPosition;
 
-            for (int j = k_NumberOfCols - 1; j >= 0; j--)
+            for (int j = NumberOfCols - 1; j >= 0; j--)
             {
-                for (int i = 0; i < k_NumberOfRows; i++)
+                for (int i = 0; i < NumberOfRows; i++)
                 {
                     if (m_EnemyMatrix[i, j] != null)
                     {
@@ -135,9 +137,9 @@ namespace SpaceInvaders.Sprites.Enemies
         {
             Vector2 leftestEnemyPosition;
 
-            for (int j = 0; j < k_NumberOfCols; j++)
+            for (int j = 0; j < NumberOfCols; j++)
             {
-                for (int i = 0; i < k_NumberOfRows; i++)
+                for (int i = 0; i < NumberOfRows; i++)
                 {
                     if (m_EnemyMatrix[i, j] != null)
                     {
