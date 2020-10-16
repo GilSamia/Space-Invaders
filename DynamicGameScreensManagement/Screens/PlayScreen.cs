@@ -67,7 +67,6 @@ namespace GameScreens.Screens
         {
             if (!m_IsInit)
             {
-                //addManagers();
                 addBackground();
                 addSpaceShips();
                 addMotherShip();
@@ -120,13 +119,11 @@ namespace GameScreens.Screens
         public void OnGameOver()
         {
             string massage = buildMessage();
-            this.r_SpaceShips[0].RemoveScoreTextContent();
-            this.r_SpaceShips.Remove(r_SpaceShips[0]);
+
             if (!(Game as GameWithScreens).SinglePlayerGame)
             {
-                this.r_SpaceShips.Remove(r_SpaceShips[1]);
-                this.r_SpaceShips[1].RemoveScoreTextContent();
-                this.r_SpaceShips.Remove(r_SpaceShips[1]);
+                this.r_SpaceShips[0].RemoveScoreTextContent();
+                this.r_SpaceShips.Remove(r_SpaceShips[0]);
             }
             r_Game.Components.Remove(this);
             Game.Components.Remove(this);
