@@ -226,15 +226,12 @@ namespace SpaceInvaders.Sprites.Enemies
                     return;
                 }
             }
+
             (r_GameScreen as PlayScreen).moveLevel();
-             //(r_Game as PlayScreen).OnGameOver();
-
         }
-
 
         public override void Draw(GameTime i_GameTime)
         {
-
         }
     }
 }

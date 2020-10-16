@@ -4,7 +4,6 @@ using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
@@ -18,15 +17,16 @@ namespace SpaceInvaders.Sprites
 {
     internal class SpaceShip : Sprite, IShooter, ICollidable2D, IDeadable
     {
-        private GameScreen r_Game;
+        private GameScreen m_GameScreen;
 
         protected IInputManager m_InputManager;
         private const float k_Velocity = 140f;
         private const float k_SpaceShipDistanceDelta = 1.5f;
         private const float k_SpaceShipDistanceFromViewPortPrecente = 0.3f;
 
-        private static int m_SpaceShipCounter;
+        private static int s_SpaceShipCounter;
         private readonly int r_SpaceShipIndex;
+        private int m_SpaceShipIndex;
         private PlayerData m_PlayerData;
         private ScoreText m_ScoreText;
         private Lifes m_PlayerLifes;
@@ -44,21 +44,40 @@ namespace SpaceInvaders.Sprites
         private readonly TimeSpan r_BlinkLengthAnimation = TimeSpan.FromSeconds(2);
 
         private static int m_TexutreSize;
-
+        private bool m_IsFirstGamingRound = true;
         public event EventHandler<EventArgs> Disposed;
 
         public SpaceShip(GameScreen i_Game, PlayerData m_PlayerData)
             : base(m_PlayerData.AssetName, i_Game.Game)
         {
-            r_Game = i_Game;
+            m_GameScreen = i_Game;
             this.m_PlayerData = m_PlayerData;
-            r_SpaceShipIndex = m_SpaceShipCounter;
-            m_SpaceShipCounter++;
-            PlayerInformation = new PlayerInformation(r_SpaceShipIndex);
-            i_Game.Add(this);
+            m_SpaceShipIndex = s_SpaceShipCounter;
+            s_SpaceShipCounter++;
+            initPlayerInformation();
+            m_GameScreen.Add(this);
         }
 
-        public PlayerInformation PlayerInformation { get; }
+        private void initPlayerInformation()
+        {
+            PlayerInformation = new PlayerInformation(m_SpaceShipIndex);
+        }
+
+        internal void ChangeScreen(PlayScreen playScreens)
+        {
+            m_GameScreen = playScreens;
+            m_GameScreen.Add(this);
+            m_PlayerLifes.ChangeScreen(m_GameScreen);
+            m_ScoreText.ChangeScreen(m_GameScreen);
+            m_IsDying = false;
+            m_BulletsCounter = 0;
+        }
+
+        public PlayerInformation PlayerInformation { get; set; }
+
+        public int SpaceShipCounter { get; set; }
+
+        public int SpaceShipIndex { get; set; }
 
         public ScoreText ScoreText { get; set; }
 
@@ -66,16 +85,14 @@ namespace SpaceInvaders.Sprites
 
         public float ShooterWidth => Width;
 
-        public int SpaceShipIndex => r_SpaceShipIndex;
-
         public static int TexutreSize { get => m_TexutreSize; set => m_TexutreSize = value; }
 
         public static float PositionY { get; private set; }
 
         private void addScoreFont()
         {
-            string text = String.Format("P{0} Score: {1}", r_SpaceShipIndex + 1, PlayerInformation.CurrentScore);
-            m_ScoreText = new ScoreText(r_Game, PlayerInformation);
+            string text = String.Format("P{0} Score: {1}", m_SpaceShipIndex + 1, PlayerInformation.CurrentScore);
+            m_ScoreText = new ScoreText(m_GameScreen, PlayerInformation);
         }
 
         private void addDistroyedAnimation()
@@ -94,7 +111,7 @@ namespace SpaceInvaders.Sprites
 
         private void distroyedAnimations_Finished(object sender, EventArgs e)
         {
-            r_Game.Remove(this);
+            m_GameScreen.Remove(this);
             m_IsDying = false;
             this.Dispose();
         }
@@ -109,13 +126,14 @@ namespace SpaceInvaders.Sprites
         {
             m_Animations.Pause();
             m_DistroyedAnimations.Restart();
-
+            s_SpaceShipCounter = 0;
+            //m_SpaceShipIndex = 0;
             //m_ScoreText.removeContent();
             //TODO:Remove the text...
 
-            r_Game.Remove(this);
+            m_GameScreen.Remove(this);
             this.Dispose();
-            (r_Game as PlayScreen).OnGameOver();
+            (m_GameScreen as PlayScreen).OnGameOver();
         }
 
         public void RemoveScoreTextContent()
@@ -138,7 +156,7 @@ namespace SpaceInvaders.Sprites
 
         private void addLifes()
         {
-            m_PlayerLifes = new Lifes(r_Game, this);
+            m_PlayerLifes = new Lifes(m_GameScreen, this);
         }
 
         protected override void InitOrigins()
@@ -150,7 +168,7 @@ namespace SpaceInvaders.Sprites
 
         private void initPosition()
         {
-            float x = r_SpaceShipIndex * Texture.Width * k_SpaceShipDistanceDelta;
+            float x = m_SpaceShipIndex * Texture.Width * k_SpaceShipDistanceDelta;
             float y = GraphicsDevice.Viewport.Height - (Texture.Height + Texture.Height * k_SpaceShipDistanceFromViewPortPrecente);
 
             PositionY = y;
@@ -187,7 +205,7 @@ namespace SpaceInvaders.Sprites
         {
             if (canShoot())
             {
-                Bullet bullet = new SpaceShipBullet(r_Game, this);
+                Bullet bullet = new SpaceShipBullet(m_GameScreen, this);
                 m_BulletsCounter++;
                 (Game as GameWithScreens).SpriteSoundEffects["SSGunShot"].Play();
             }
@@ -202,7 +220,7 @@ namespace SpaceInvaders.Sprites
 
         public void ReduceBulletsByOne()
         {
-            m_BulletsCounter--;
+            m_BulletsCounter = Math.Max(0, m_BulletsCounter - 1);
         }
 
         public void OnKill(IShooter i_MyKiller)

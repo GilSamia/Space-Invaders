@@ -18,6 +18,7 @@ namespace SpaceInvaders.Sprites
         private const string k_AssetTextureName = @"Sprites/TransparentBG_1x1";
 
         public string Text { get; set; }
+
         protected Color FontColor
         {
             get { return m_FontColor; }

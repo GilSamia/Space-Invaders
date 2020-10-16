@@ -9,6 +9,7 @@ namespace SpaceInvaders.Utils
         private static readonly List<Color> r_PlayresColor = new List<Color>() { Color.Blue, Color.Green };
         private const int k_MaxLife = 3;
         private readonly int r_PlayerIndex;
+        private int m_PlayerIndex;
         private int m_CurrentScore;
         private int m_CurrentLife = k_MaxLife;
         private const int k_NumberOfPointToReduceDueToDying = -600;
@@ -22,7 +23,7 @@ namespace SpaceInvaders.Utils
         {
             get
             {
-                return r_PlayresColor[PlayerIndex];
+                return r_PlayresColor[r_PlayerIndex];
             }
         }
 

@@ -3,7 +3,6 @@ using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Sprites.Bullets;
 using SpaceInvaders.Sprites.Enemies;

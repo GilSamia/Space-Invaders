@@ -4,7 +4,6 @@ using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using SpaceInvaders.Animations;
 using SpaceInvaders.Interfaces;
 using SpaceInvaders.Sprites.Bullets;
@@ -143,6 +142,7 @@ namespace SpaceInvaders.Sprites.Enemies
 
         private void Enemy_AnimationFinished(object sender, EventArgs e)
         {
+            Position = new Vector2(-100, -100);
             r_Game.Remove(this);
         }
 

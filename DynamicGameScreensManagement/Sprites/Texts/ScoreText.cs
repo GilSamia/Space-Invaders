@@ -13,9 +13,16 @@ namespace SpaceInvaders.Sprites.Texts
         private readonly PlayerInformation r_PlayerInfo;
         private const string k_ConsolasFont = @"Fonts/Consolas";
 
+        private GameScreen m_GameScreen;
+
         public ScoreText(GameScreen i_Game, PlayerInformation i_PlayerInfo) : base(k_ConsolasFont, i_Game, String.Empty)
         {
+            m_GameScreen = i_Game;
+
             r_PlayerInfo = i_PlayerInfo;
+            initColor();
+            setText();
+            initPosition();
         }
 
         public ScoreText(string i_AssetTextureName, Game i_Game, PlayerInformation i_PlayerInfo) : base(k_ConsolasFont, i_AssetTextureName, i_Game, String.Empty)
@@ -26,9 +33,9 @@ namespace SpaceInvaders.Sprites.Texts
         public override void Initialize()
         {
             base.Initialize();
-            initColor();
-            setText();
-            initPosition();
+            //initColor();
+            //setText();
+            //initPosition();
         }
 
         private void setText()
@@ -43,14 +50,23 @@ namespace SpaceInvaders.Sprites.Texts
 
         private void initPosition()
         {
-            Vector2 size = m_Font.MeasureString(Text);
-            Position = new Vector2(0, r_PlayerInfo.PlayerIndex * size.Y);
+            //Vector2 size = m_Font.MeasureString(Text);
+            //Position = new Vector2(0, r_PlayerInfo.PlayerIndex * size.Y);
+
+            //Vector2 size = m_Font.MeasureString(Text);
+            Position = new Vector2(0, r_PlayerInfo.PlayerIndex * 20);
         }
 
         public override void Update(GameTime gameTime)
         {
             setText();
             base.Update(gameTime);
+        }
+
+        internal void ChangeScreen(GameScreen i_GameScreen)
+        {
+            m_GameScreen = i_GameScreen;
+            m_GameScreen.Add(this);
         }
     }
 }

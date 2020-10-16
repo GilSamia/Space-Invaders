@@ -20,8 +20,9 @@ namespace GameScreens.Screens
     public class PlayScreen : GameScreen
     {
         internal const int k_NumberOfCols = 9;
-        private const float k_BarrierSpeedIncrement = 1.6f;
+        private const float k_BarrierSpeedIncrement = 1.06f;
 
+        private static int s_Level = 1;
         private int m_CurrentLevel;
         private readonly Game r_Game;
         private Background m_Background;
@@ -49,6 +50,26 @@ namespace GameScreens.Screens
             r_Game = i_Game;
             m_CurrentLevel = i_Level;
             Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private PlayScreen(Game i_Game, int i_Level, List<SpaceShip> i_SpaceShips) : base(i_Game)
+        {
+            m_PauseScreen = new PauseScreen(i_Game);
+            r_Game = i_Game;
+            
+            m_CurrentLevel = i_Level;
+            r_SpaceShips = i_SpaceShips;
+            addSpaceShipContent();
+            Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
+        }
+
+        private void addSpaceShipContent()
+        {
+            foreach (SpaceShip spaceship in r_SpaceShips)
+            {
+                //this.Add(spaceship);
+                spaceship.ChangeScreen(this);
+            }
         }
 
         public int CurrentLevel
@@ -100,19 +121,22 @@ namespace GameScreens.Screens
 
         private void addSpaceShips()
         {
-            List<PlayerData> playersData = new List<PlayerData>();
-
-            PlayerData player1Data = (new PlayerData(Keys.I, Keys.P, Keys.D9, @"Sprites/Ship01_32x32"));
-            r_SpaceShips.Add(new SpaceShipWithMouse(this, player1Data));
-
-            if (!(Game as GameWithScreens).SinglePlayerGame)
+            if (s_Level == 1)
             {
-                playersData.Add(new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
-            }
+                List<PlayerData> playersData = new List<PlayerData>();
 
-            foreach (PlayerData data in playersData)
-            {
-                r_SpaceShips.Add(new SpaceShip(this, data));
+                PlayerData player1Data = (new PlayerData(Keys.I, Keys.P, Keys.D9, @"Sprites/Ship01_32x32"));
+                r_SpaceShips.Add(new SpaceShipWithMouse(this, player1Data));
+
+                if (!(Game as GameWithScreens).SinglePlayerGame)
+                {
+                    playersData.Add(new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
+                }
+
+                foreach (PlayerData data in playersData)
+                {
+                    r_SpaceShips.Add(new SpaceShip(this, data));
+                }
             }
         }
 
@@ -180,11 +204,12 @@ namespace GameScreens.Screens
 
         public void moveLevel()
         {
-            m_CurrentLevel++;
-            (Game as GameWithScreens).SpriteSoundEffects["LevelWin"].Play();
-            (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, m_CurrentLevel));
-            base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, m_CurrentLevel));
+            s_Level++;
             ExitScreen();
+
+            (Game as GameWithScreens).SpriteSoundEffects["LevelWin"].Play();
+            (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, s_Level, r_SpaceShips));
+            base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, s_Level));
         }
 
         private void Window_ClientSizeChanged(object sender, EventArgs e)
