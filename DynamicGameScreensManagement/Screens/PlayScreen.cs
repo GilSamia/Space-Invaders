@@ -36,7 +36,6 @@ namespace GameScreens.Screens
         private bool m_FirstGamingRound;
 
         private PauseScreen m_PauseScreen;
-        private LifeAndScore m_LifeAndScore;
         private readonly List<PlayerInformation> r_PlayerInformation;
 
         SpriteFont m_FontCalibri;

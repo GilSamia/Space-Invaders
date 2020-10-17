@@ -41,8 +41,6 @@ namespace SpaceInvaders.Sprites
         private readonly TimeSpan r_BlinkTimeAnimation = TimeSpan.FromSeconds(1 / 8f);
         private readonly TimeSpan r_BlinkLengthAnimation = TimeSpan.FromSeconds(2);
 
-        private LifeAndScore m_LifeAndScore;
-
         private static int m_TexutreSize;
         private bool m_IsFirstGamingRound = true;
         public event EventHandler<EventArgs> Disposed;
@@ -60,8 +58,6 @@ namespace SpaceInvaders.Sprites
         public int SpaceShipCounter { get; set; }
 
         public int SpaceShipIndex { get; set; }
-
-        public LifeAndScore LifeAndScore { get; set; }
 
         public PlayerInformation CurrentPlayerInformation { get; set; }
 
