@@ -2,6 +2,7 @@
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace SpaceInvaders.Screens
@@ -33,13 +34,19 @@ namespace SpaceInvaders.Screens
         public override void Initialize()
         {
             base.Initialize();
-            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale, Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
+            m_Background.Scales = new Vector2(Game.Window.ClientBounds.Width / m_Background.WidthBeforeScale,
+                Game.Window.ClientBounds.Height / m_Background.HeightBeforeScale);
         }
 
         public override void Update(GameTime i_GameTime)
         {
             base.Update(i_GameTime);
             calculateTime(i_GameTime);
+
+            if (InputManager.KeyPressed(Keys.M))
+            {
+                (Game as GameWithScreens).MuteSound();
+            }
         }
 
         private void calculateTime(GameTime i_GameTime)

@@ -33,9 +33,11 @@ namespace GameScreens.Screens
         private readonly List<SpaceShip> r_SpaceShips = new List<SpaceShip>();
 
         private bool m_IsInit = false;
-        private bool m_FirstGamingRound = true;
+        private bool m_FirstGamingRound;
 
         private PauseScreen m_PauseScreen;
+        private LifeAndScore m_LifeAndScore;
+        private readonly List<PlayerInformation> r_PlayerInformation;
 
         SpriteFont m_FontCalibri;
 
@@ -47,29 +49,22 @@ namespace GameScreens.Screens
             : base(i_Game)
         {
             m_PauseScreen = new PauseScreen(i_Game);
+            r_PlayerInformation = r_PlayerInformation = new List<PlayerInformation>();
             r_Game = i_Game;
             m_CurrentLevel = i_Level;
+            m_FirstGamingRound = true;
             Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
-        private PlayScreen(Game i_Game, int i_Level, List<SpaceShip> i_SpaceShips) : base(i_Game)
+        private PlayScreen(Game i_Game, int i_Level, List<PlayerInformation> i_PlayerInformation) : base(i_Game)
         {
             m_PauseScreen = new PauseScreen(i_Game);
             r_Game = i_Game;
             
             m_CurrentLevel = i_Level;
-            r_SpaceShips = i_SpaceShips;
-            addSpaceShipContent();
+//            r_SpaceShips = i_SpaceShips;
+            r_PlayerInformation = i_PlayerInformation;
             Game.Window.ClientSizeChanged += Window_ClientSizeChanged;
-        }
-
-        private void addSpaceShipContent()
-        {
-            foreach (SpaceShip spaceship in r_SpaceShips)
-            {
-                //this.Add(spaceship);
-                spaceship.ChangeScreen(this);
-            }
         }
 
         public int CurrentLevel
@@ -121,21 +116,26 @@ namespace GameScreens.Screens
 
         private void addSpaceShips()
         {
-            if (s_Level == 1)
+            PlayerData player1Data = (new PlayerData(Keys.I, Keys.P, Keys.D9, @"Sprites/Ship01_32x32"));
+            if (m_FirstGamingRound)
             {
-                List<PlayerData> playersData = new List<PlayerData>();
-
-                PlayerData player1Data = (new PlayerData(Keys.I, Keys.P, Keys.D9, @"Sprites/Ship01_32x32"));
                 r_SpaceShips.Add(new SpaceShipWithMouse(this, player1Data));
+            }
+            else
+            {
+                r_SpaceShips.Add(new SpaceShipWithMouse(this, player1Data, r_PlayerInformation[0]));
+            }
 
-                if (!(Game as GameWithScreens).SinglePlayerGame)
+            if (!(Game as GameWithScreens).SinglePlayerGame)
+            {
+                PlayerData player2Data = (new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
+                if (m_FirstGamingRound)
                 {
-                    playersData.Add(new PlayerData(Keys.W, Keys.R, Keys.D3, @"Sprites/Ship02_32x32"));
+                    r_SpaceShips.Add(new SpaceShip(this, player2Data));
                 }
-
-                foreach (PlayerData data in playersData)
+                else
                 {
-                    r_SpaceShips.Add(new SpaceShip(this, data));
+                    r_SpaceShips.Add(new SpaceShip(this, player2Data, r_PlayerInformation[1]));
                 }
             }
         }
@@ -143,10 +143,9 @@ namespace GameScreens.Screens
         public void OnGameOver()
         {
             string massage = buildMessage();
-
+            m_FirstGamingRound = true;
             if (!(Game as GameWithScreens).SinglePlayerGame)
             {
-                this.r_SpaceShips[0].RemoveScoreTextContent();
                 this.r_SpaceShips.Remove(r_SpaceShips[0]);
             }
             r_Game.Components.Remove(this);
@@ -164,17 +163,17 @@ namespace GameScreens.Screens
 
             foreach (SpaceShip spaceShip in r_SpaceShips)
             {
-                if (scoreOfWinningPlayer <= spaceShip.PlayerInformation.CurrentScore)
+                if (scoreOfWinningPlayer <= spaceShip.CurrentPlayerInformation.CurrentScore)
                 {
                     winningSpaceShip = spaceShip;
-                    scoreOfWinningPlayer = spaceShip.PlayerInformation.CurrentScore;
+                    scoreOfWinningPlayer = spaceShip.CurrentPlayerInformation.CurrentScore;
                 }
 
-                playersInformationScore += string.Format("Player {0}, Your Score is: {1}{2}", spaceShip.PlayerInformation.PlayerIndex + 1,
-                    spaceShip.PlayerInformation.CurrentScore, Environment.NewLine);
+                playersInformationScore += string.Format("Player {0}, Your Score is: {1}{2}", spaceShip.CurrentPlayerInformation.PlayerIndex + 1,
+                    spaceShip.CurrentPlayerInformation.CurrentScore, Environment.NewLine);
             }
 
-            string winningMessage = string.Format("Player {0} you won!{1}{1}", winningSpaceShip.PlayerInformation.PlayerIndex + 1,
+            string winningMessage = string.Format("Player {0} you won!{1}{1}", winningSpaceShip.CurrentPlayerInformation.PlayerIndex + 1,
                 Environment.NewLine);
             winningMessage += playersInformationScore;
 
@@ -189,7 +188,7 @@ namespace GameScreens.Screens
         }
 
         public override void Update(GameTime gameTime)
-        {
+        { 
             base.Update(gameTime);
 
             if (InputManager.KeyPressed(Keys.P))
@@ -204,11 +203,21 @@ namespace GameScreens.Screens
 
         public void moveLevel()
         {
+            m_FirstGamingRound = false;
             s_Level++;
             ExitScreen();
+            if (r_PlayerInformation.Count > 0) 
+            {
+                r_PlayerInformation.Clear(); 
+            }
+            foreach (SpaceShip spaceShip in r_SpaceShips)
+            {
+                
+                r_PlayerInformation.Add(spaceShip.CurrentPlayerInformation);
+            }
 
             (Game as GameWithScreens).SpriteSoundEffects["LevelWin"].Play();
-            (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, s_Level, r_SpaceShips));
+            (base.m_ScreensManager as ScreensMananger).Push(new PlayScreen(this.Game, s_Level, r_PlayerInformation));
             base.m_ScreensManager.SetCurrentScreen(new LevelTransitionScreen(this.Game, s_Level));
         }
 
@@ -221,6 +230,52 @@ namespace GameScreens.Screens
         public override void Draw(GameTime i_GameTime)
         {
             base.Draw(i_GameTime);
+            try
+            {
+                m_SpriteBatch.Begin();
+                DrawCurrentLives(m_SpriteBatch);
+                DrawScore(m_SpriteBatch);
+            }
+            finally
+            {
+                m_SpriteBatch.End();
+            }
+        }
+
+        public void DrawCurrentLives(SpriteBatch i_SpriteBatch)
+        {
+            int spaceShipCounter = 1;
+            foreach (SpaceShip spaceship in r_SpaceShips)
+            {
+                int numberOfLifeOfCurrentSpaceShip = spaceship.CurrentPlayerInformation.CurrentLife;
+                string assetName = spaceship.AssetName;
+                Color color = Color.White;
+                Point scale = new Point(spaceship.Texture.Width / 2, spaceship.Texture.Height / 2);
+
+                for (int i = 0; i <= numberOfLifeOfCurrentSpaceShip; i++) {
+                    Point position = 
+                        new Point(i_SpriteBatch.GraphicsDevice.Viewport.Width - (spaceship.Texture.Width / 2 * i), spaceship.Texture.Height / 2 * (spaceShipCounter - 1));
+                    Rectangle rectangle = new Rectangle(position, scale);
+
+                    i_SpriteBatch.Draw(spaceship.Texture, rectangle, color);
+                }
+
+            spaceShipCounter++;
+            }
+        }
+
+        public void DrawScore(SpriteBatch i_SpriteBatch)
+        {
+            int spaceShipCounter = 1;
+            List<Color> playersColor = new List<Color>() { Color.Blue, Color.Green };
+            foreach (SpaceShip spaceship in r_SpaceShips)
+            {
+                int numberOfLifeOfCurrentSpaceShip = spaceship.CurrentPlayerInformation.CurrentScore;
+                string text = String.Format("P{0} Score: {1}", spaceShipCounter, spaceship.CurrentPlayerInformation.CurrentScore);
+                i_SpriteBatch.DrawString(m_FontCalibri, text, new Vector2(0, (spaceShipCounter - 1) * 20), playersColor[spaceShipCounter-1]);
+
+                spaceShipCounter++;
+            }
         }
     }
 }

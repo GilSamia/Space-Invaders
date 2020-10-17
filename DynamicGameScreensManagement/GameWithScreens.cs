@@ -62,9 +62,12 @@ namespace SpaceInvaders
         
         public List<string> SoundsEffects => m_SoundsEffects;
 
-        public float SoundEffectVolume {
+        public float SoundEffectVolume
+        {
             get { return m_SoundEffectVolume; }
-            set { m_SoundEffectVolume = value;
+            set
+            {
+                m_SoundEffectVolume = value;
                 setSoundEffectVolume(m_SoundEffectVolume);
             }
         }
@@ -79,9 +82,6 @@ namespace SpaceInvaders
 
         private void setScreenStack(ScreensMananger i_ScreensManager)
         {
-            //i_ScreensManager.Push(new GameOverScreen(this));
-            //i_ScreensManager.Push(new PlayScreen(this));
-            //i_ScreensManager.Push(new LevelTransitionScreen(this, 1));
             i_ScreensManager.Push(new DummyGameScreen(this));
             i_ScreensManager.SetCurrentScreen(new WelcomeScreen(this));
         }

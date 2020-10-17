@@ -264,6 +264,7 @@ namespace Infrastructure.ObjectModel
         public Sprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
         { }
+
         private GameScreen m_GameScreen;
 
         public Sprite(string i_AssetName, Game i_Game, GameScreen i_GameScreen)

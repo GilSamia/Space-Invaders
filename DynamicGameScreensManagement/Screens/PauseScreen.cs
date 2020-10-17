@@ -34,6 +34,10 @@ namespace SpaceInvaders.Screens
             {
                 ExitScreen();
             }
+            if (InputManager.KeyPressed(Keys.M))
+            {
+                (Game as GameWithScreens).MuteSound();
+            }
         }
 
         public override void Draw(GameTime gameTime)
